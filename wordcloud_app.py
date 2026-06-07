@@ -99,9 +99,11 @@ def fetch_sheet_data(sheet_url: str):
         rows = ws.get_all_values()
         if not rows:
             return None, None, "シートにデータがありません。"
-        return rows[0], rows[1:], None
+        headers = rows[0] if rows else []
+        data = rows[1:] if len(rows) > 1 else []
+        return headers, data, None
     except Exception as e:
-        return None, None, str(e)
+        return None, None, f"{type(e).__name__}: {e}"
 
 
 def clean_text(text: str) -> str:
@@ -239,8 +241,8 @@ if not sheet_url.strip():
 with st.spinner("スプレッドシートからデータを取得中..."):
     headers, data, err = fetch_sheet_data(sheet_url.strip())
 
-if err:
-    st.error(f"エラー: {err}")
+if err or headers is None:
+    st.error(f"データ取得エラー: {err or 'ヘッダーが取得できませんでした'}")
     st.stop()
 
 # ─── 列選択 ─────────────────────────────────────────────
