@@ -104,12 +104,43 @@ def fetch_sheet_data(sheet_url: str):
         return None, None, str(e)
 
 
+def clean_text(text: str) -> str:
+    """URLや記号などのノイズを除去してからトークナイズに渡す"""
+    # URLを除去
+    text = re.sub(r"https?://\S+", "", text)
+    # メールアドレスを除去
+    text = re.sub(r"\S+@\S+\.\S+", "", text)
+    # ランダムな英数字の羅列（6文字以上の大小混在英数字）を除去
+    text = re.sub(r"\b[A-Za-z0-9]{6,}\b", "", text)
+    # 記号・特殊文字を除去（日本語・英数字・スペース以外）
+    text = re.sub(r"[^\w\sぁ-んァ-ン一-龥ーａ-ｚＡ-Ｚ０-９]", " ", text)
+    return text
+
+
+def is_noise(surface: str, base: str) -> bool:
+    """ノイズ判定：除外すべき単語ならTrue"""
+    # 英字のみで3文字以下
+    if re.match(r"^[a-zA-Z]{1,3}$", surface):
+        return True
+    # ランダムな英数字混在（大文字・小文字・数字が混在する5文字以上）
+    if re.match(r"^(?=.*[A-Z])(?=.*[a-z])[A-Za-z0-9]{5,}$", surface):
+        return True
+    # URLの残骸
+    if surface in ("http", "https", "www", "com", "jp", "gle"):
+        return True
+    # 記号のみ
+    if re.match(r"^[^\w]+$", surface):
+        return True
+    return False
+
+
 def tokenize(texts: list[str]) -> list[str]:
     t = get_tokenizer()
     words = []
     for text in texts:
         if not isinstance(text, str) or not text.strip():
             continue
+        text = clean_text(text)
         for token in t.tokenize(text):
             surface = token.surface
             parts = token.part_of_speech.split(",")
@@ -122,6 +153,8 @@ def tokenize(texts: list[str]) -> list[str]:
             if surface in STOP_WORDS or base in STOP_WORDS:
                 continue
             if re.match(r"^[0-9０-９]+$", surface):
+                continue
+            if is_noise(surface, base):
                 continue
             words.append(base)
     return words
@@ -195,6 +228,7 @@ with st.sidebar:
     )
     refresh_interval = st.slider("自動更新間隔（秒）", 10, 300, 60, step=10)
     auto_refresh = st.toggle("自動更新", value=True)
+    min_count = st.slider("最低出現回数", 1, 10, 2, step=1, help="この回数以上登場した単語だけ表示します")
     st.button("🔄 今すぐ更新")
 
 if not sheet_url.strip():
@@ -241,6 +275,12 @@ if not words:
     st.stop()
 
 freq = Counter(words)
+# 最低出現回数でフィルタ
+freq = {w: c for w, c in freq.items() if c >= min_count}
+
+if not freq:
+    st.warning(f"{min_count}回以上登場する単語がありません。左の「最低出現回数」を下げてみてください。")
+    st.stop()
 
 col1, col2 = st.columns([3, 1])
 
