@@ -168,6 +168,12 @@ if not csv_url:
     st.error("スプレッドシートのURLが正しくありません。`/spreadsheets/d/` を含むURLを入力してください。")
     st.stop()
 
+with st.sidebar:
+    st.divider()
+    with st.expander("🔗 デバッグ：取得URL確認"):
+        st.code(csv_url)
+        st.caption("このURLをブラウザで開いてCSVが表示されればOKです。")
+
 # ─ データ取得 ─────────────────────────────────────────────
 status_placeholder = st.empty()
 last_updated_placeholder = st.empty()
@@ -177,6 +183,10 @@ try:
         df = fetch_csv(csv_url)
 except Exception as e:
     st.error(f"データ取得に失敗しました: {e}\n\nスプレッドシートが公開設定になっているか確認してください。")
+    with st.expander("詳細"):
+        st.code(csv_url, language=None)
+        st.write("↑ このURLをブラウザのアドレスバーに貼り付けて開いてみてください。")
+        st.write("CSVが表示されれば接続は正常です。エラーが出る場合は「ファイル→共有→ウェブに公開」を確認してください。")
     st.stop()
 
 # ─ 列選択 ────────────────────────────────────────────────
