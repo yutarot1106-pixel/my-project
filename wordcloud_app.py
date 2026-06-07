@@ -275,8 +275,8 @@ if not words:
     st.stop()
 
 freq = Counter(words)
-# 最低出現回数でフィルタ
-freq = {w: c for w, c in freq.items() if c >= min_count}
+# 最低出現回数でフィルタ（Counterのまま保持）
+freq = Counter({w: c for w, c in freq.items() if c >= min_count})
 
 if not freq:
     st.warning(f"{min_count}回以上登場する単語がありません。左の「最低出現回数」を下げてみてください。")
