@@ -53,22 +53,34 @@ def find_font():
 
 
 def sheet_url_to_csv_url(url: str) -> str | None:
-    """スプレッドシートURLをCSVエクスポートURLに変換"""
+    """スプレッドシートURLをCSVエクスポートURLに変換（pub形式を優先）"""
     m = re.search(r"/spreadsheets/d/([a-zA-Z0-9_-]+)", url)
     if not m:
         return None
     sheet_id = m.group(1)
-    # gid（シートID）があれば取得
     gid_m = re.search(r"[#&?]gid=(\d+)", url)
     gid = gid_m.group(1) if gid_m else "0"
-    return f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
+    # ウェブ公開形式（"ウェブに公開"済みのシートで動作）
+    return f"https://docs.google.com/spreadsheets/d/{sheet_id}/pub?output=csv&gid={gid}"
 
 
 def fetch_csv(csv_url: str) -> pd.DataFrame:
-    req = urllib.request.Request(csv_url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=10) as resp:
+    req = urllib.request.Request(
+        csv_url,
+        headers={
+            "User-Agent": "Mozilla/5.0",
+            "Accept": "text/csv,text/plain,*/*",
+        },
+    )
+    with urllib.request.urlopen(req, timeout=15) as resp:
         content = resp.read()
-    return pd.read_csv(io.BytesIO(content), encoding="utf-8-sig")
+    # UTF-8 / Shift-JIS どちらでも対応
+    for enc in ("utf-8-sig", "utf-8", "shift-jis"):
+        try:
+            return pd.read_csv(io.BytesIO(content), encoding=enc)
+        except Exception:
+            continue
+    raise ValueError("CSVの文字コードを判別できませんでした。")
 
 
 def tokenize(texts: list[str]) -> list[str]:
