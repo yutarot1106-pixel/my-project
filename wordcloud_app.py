@@ -315,7 +315,12 @@ with col2:
         options=top_words,
         format_func=lambda w: f"{w}（{top_counts[w]}）",
         selection_mode="single",
+        default=None,
     )
+
+# 選択が外れたら表示をリセット
+if not selected_word:
+    st.stop()
 
 # ─── 選択単語の回答表示 ───────────────────────────────────
 if selected_word:
