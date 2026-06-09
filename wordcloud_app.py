@@ -288,11 +288,40 @@ with st.sidebar:
         value="Google Forms リアルタイム ワードクラウド",
         help="ページ上部に表示されるタイトルを自由に変更できます。",
     )
-    sheet_url = st.text_area(
-        "スプレッドシート URL",
-        value="https://docs.google.com/spreadsheets/d/1PIFEKv7ylfnfeIyCgqipTFgijwYPzRctfjjHk4179bA/edit",
-        height=120,
-    )
+
+    st.divider()
+
+    # ─ 複数スプレッドシートURL管理 ──────────────────────────
+    if "sheet_urls" not in st.session_state:
+        st.session_state.sheet_urls = [
+            "https://docs.google.com/spreadsheets/d/1PIFEKv7ylfnfeIyCgqipTFgijwYPzRctfjjHk4179bA/edit"
+        ]
+
+    st.markdown("**📋 スプレッドシート URL**")
+    urls_to_delete = []
+    for i, url in enumerate(st.session_state.sheet_urls):
+        col_url, col_del = st.columns([10, 1])
+        with col_url:
+            st.session_state.sheet_urls[i] = st.text_input(
+                f"URL {i+1}",
+                value=url,
+                key=f"url_{i}",
+                label_visibility="collapsed",
+            )
+        with col_del:
+            if len(st.session_state.sheet_urls) > 1:
+                if st.button("✕", key=f"del_{i}"):
+                    urls_to_delete.append(i)
+
+    for i in sorted(urls_to_delete, reverse=True):
+        st.session_state.sheet_urls.pop(i)
+        st.rerun()
+
+    if st.button("＋ スプレッドシートを追加"):
+        st.session_state.sheet_urls.append("")
+        st.rerun()
+
+    st.divider()
     refresh_interval = st.slider("自動更新間隔（秒）", 10, 300, 60, step=10)
     auto_refresh = st.toggle("自動更新", value=True)
     min_count = st.slider("最低出現回数", 1, 10, 2, step=1, help="この回数以上登場した単語だけ表示します")
@@ -304,40 +333,70 @@ st.title(f"☁️ {app_title}")
 if auto_refresh:
     st_autorefresh(interval=refresh_interval * 1000, key="autorefresh")
 
-if not sheet_url.strip():
-    st.info("← スプレッドシートのURLを入力してください。")
+active_urls = [u.strip() for u in st.session_state.sheet_urls if u.strip()]
+if not active_urls:
+    st.info("← 左のサイドバーにスプレッドシートのURLを入力してください。")
     st.stop()
 
-# ─── シート一覧取得（キャッシュ付き） ────────────────────
+# ─── 全スプレッドシートからシート一覧取得 ────────────────
+all_sheet_options = {}   # {url: [sheet_title, ...]}
+fetch_errors = []
+
 with st.spinner("シート一覧を取得中..."):
-    all_titles, titles_err = cached_get_titles(sheet_url.strip())
+    for url in active_urls:
+        titles, err = cached_get_titles(url)
+        if err or titles is None:
+            fetch_errors.append(f"`{url[:60]}...` → {err}")
+        else:
+            all_sheet_options[url] = titles
 
-if titles_err or all_titles is None:
-    st.error(f"シート取得エラー: {titles_err or '不明なエラー'}")
+if fetch_errors:
+    for e in fetch_errors:
+        st.error(f"シート取得エラー: {e}")
+
+if not all_sheet_options:
     st.stop()
 
-# ─── シート選択 ──────────────────────────────────────────
+# ─── シート選択（スプレッドシートごと） ─────────────────
+selected_sheets_per_url = {}
 with st.sidebar:
     st.divider()
-    selected_sheets = st.multiselect(
-        "対象シート（複数選択で合算）",
-        options=all_titles,
-        default=all_titles,
-        help="複数選択すると回答を合算してワードクラウドを生成します。",
-    )
+    for url, titles in all_sheet_options.items():
+        short = url.split("/d/")[1][:12] + "..." if "/d/" in url else url[:20]
+        selected = st.multiselect(
+            f"シート（{short}）",
+            options=titles,
+            default=titles,
+            key=f"sheets_{url}",
+        )
+        if selected:
+            selected_sheets_per_url[url] = selected
 
-if not selected_sheets:
+if not selected_sheets_per_url:
     st.warning("対象シートを選択してください。")
     st.stop()
 
-# ─── データ取得（キャッシュ付き・全タブ共有） ────────────
-with st.spinner(f"データを取得中（{len(selected_sheets)}シート）..."):
-    titles_key = "|||".join(selected_sheets)
-    headers, data, err = cached_fetch_all(sheet_url.strip(), titles_key)
+# ─── 全スプレッドシートのデータを取得・合算 ─────────────
+all_headers = None
+all_data = []
 
-if err or headers is None:
-    st.error(f"データ取得エラー: {err or 'ヘッダーが取得できませんでした'}")
+with st.spinner(f"データを取得中（{len(selected_sheets_per_url)}スプレッドシート）..."):
+    for url, sheets in selected_sheets_per_url.items():
+        titles_key = "|||".join(sheets)
+        headers, data, err = cached_fetch_all(url, titles_key)
+        if err or headers is None:
+            st.warning(f"取得スキップ: {url[:50]}... → {err}")
+            continue
+        if all_headers is None:
+            all_headers = headers
+        all_data.extend(data)
+
+if all_headers is None or not all_data:
+    st.error("有効なデータが取得できませんでした。")
     st.stop()
+
+headers = all_headers
+data    = all_data
 
 # ─── 列選択 ─────────────────────────────────────────────
 with st.sidebar:
