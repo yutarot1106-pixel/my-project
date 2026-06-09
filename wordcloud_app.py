@@ -250,8 +250,6 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("☁️ Google Forms リアルタイム ワードクラウド")
-
 # ─── credentials.json がない場合はセットアップ案内 ─────
 if not Path("credentials.json").exists():
     st.error("⚠️ **初回セットアップが必要です。** `credentials.json` が見つかりません。")
@@ -285,6 +283,11 @@ python -m streamlit run wordcloud_app.py
 # ─── サイドバー ──────────────────────────────────────────
 with st.sidebar:
     st.header("⚙️ 設定")
+    app_title = st.text_input(
+        "タイトル",
+        value="Google Forms リアルタイム ワードクラウド",
+        help="ページ上部に表示されるタイトルを自由に変更できます。",
+    )
     sheet_url = st.text_area(
         "スプレッドシート URL",
         value="https://docs.google.com/spreadsheets/d/1PIFEKv7ylfnfeIyCgqipTFgijwYPzRctfjjHk4179bA/edit",
@@ -294,6 +297,8 @@ with st.sidebar:
     auto_refresh = st.toggle("自動更新", value=True)
     min_count = st.slider("最低出現回数", 1, 10, 2, step=1, help="この回数以上登場した単語だけ表示します")
     st.button("🔄 今すぐ更新")
+
+st.title(f"☁️ {app_title}")
 
 # 非ブロッキング自動更新（タブごとに独立して動作）
 if auto_refresh:
