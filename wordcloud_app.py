@@ -89,19 +89,39 @@ def get_gspread_client():
     return gspread.authorize(creds), None
 
 
-def fetch_sheet_data(sheet_url: str):
+def get_worksheet_titles(sheet_url: str):
+    """スプレッドシート内の全シート名を返す"""
+    client, err = get_gspread_client()
+    if err:
+        return None, err
+    try:
+        sh = client.open_by_url(sheet_url)
+        return [ws.title for ws in sh.worksheets()], None
+    except Exception as e:
+        return None, f"{type(e).__name__}: {e}"
+
+
+def fetch_sheet_data(sheet_url: str, sheet_titles: list[str]):
+    """指定した複数シートのデータを合算して返す"""
     client, err = get_gspread_client()
     if err:
         return None, None, err
     try:
         sh = client.open_by_url(sheet_url)
-        ws = sh.get_worksheet(0)
-        rows = ws.get_all_values()
-        if not rows:
-            return None, None, "シートにデータがありません。"
-        headers = rows[0] if rows else []
-        data = rows[1:] if len(rows) > 1 else []
-        return headers, data, None
+        headers = None
+        all_data = []
+        for title in sheet_titles:
+            ws = sh.worksheet(title)
+            rows = ws.get_all_values()
+            if not rows:
+                continue
+            if headers is None:
+                headers = rows[0]
+            # ヘッダーが異なるシートは列数を合わせてスキップせず取り込む
+            all_data.extend(rows[1:])
+        if headers is None:
+            return None, None, "選択したシートにデータがありません。"
+        return headers, all_data, None
     except Exception as e:
         return None, None, f"{type(e).__name__}: {e}"
 
@@ -237,9 +257,31 @@ if not sheet_url.strip():
     st.info("← スプレッドシートのURLを入力してください。")
     st.stop()
 
+# ─── シート一覧取得 ──────────────────────────────────────
+with st.spinner("シート一覧を取得中..."):
+    all_titles, titles_err = get_worksheet_titles(sheet_url.strip())
+
+if titles_err or all_titles is None:
+    st.error(f"シート取得エラー: {titles_err or '不明なエラー'}")
+    st.stop()
+
+# ─── シート選択 ──────────────────────────────────────────
+with st.sidebar:
+    st.divider()
+    selected_sheets = st.multiselect(
+        "対象シート（複数選択で合算）",
+        options=all_titles,
+        default=all_titles,
+        help="複数選択すると回答を合算してワードクラウドを生成します。",
+    )
+
+if not selected_sheets:
+    st.warning("対象シートを選択してください。")
+    st.stop()
+
 # ─── データ取得 ──────────────────────────────────────────
-with st.spinner("スプレッドシートからデータを取得中..."):
-    headers, data, err = fetch_sheet_data(sheet_url.strip())
+with st.spinner(f"データを取得中（{len(selected_sheets)}シート）..."):
+    headers, data, err = fetch_sheet_data(sheet_url.strip(), selected_sheets)
 
 if err or headers is None:
     st.error(f"データ取得エラー: {err or 'ヘッダーが取得できませんでした'}")
@@ -247,7 +289,6 @@ if err or headers is None:
 
 # ─── 列選択 ─────────────────────────────────────────────
 with st.sidebar:
-    st.divider()
     col_options = [h for h in headers if "タイムスタンプ" not in h and h]
     selected_cols = st.multiselect(
         "対象列（複数選択可）",
