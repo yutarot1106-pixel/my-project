@@ -16,6 +16,7 @@ from collections import Counter
 from pathlib import Path
 
 import streamlit as st
+from streamlit_autorefresh import st_autorefresh
 from janome.tokenizer import Tokenizer
 from wordcloud import WordCloud
 import matplotlib
@@ -253,6 +254,10 @@ with st.sidebar:
     min_count = st.slider("最低出現回数", 1, 10, 2, step=1, help="この回数以上登場した単語だけ表示します")
     st.button("🔄 今すぐ更新")
 
+# 非ブロッキング自動更新（タブごとに独立して動作）
+if auto_refresh:
+    st_autorefresh(interval=refresh_interval * 1000, key="autorefresh")
+
 if not sheet_url.strip():
     st.info("← スプレッドシートのURLを入力してください。")
     st.stop()
@@ -396,7 +401,3 @@ if selected_word:
     else:
         st.info("該当する回答が見つかりませんでした。")
 
-# ─── 自動更新 ────────────────────────────────────────────
-if auto_refresh:
-    time.sleep(refresh_interval)
-    st.rerun()
