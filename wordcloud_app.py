@@ -307,8 +307,48 @@ with col2:
     st.caption(f"最終更新: {time.strftime('%H:%M:%S')}")
 
     st.subheader("🏆 上位ワード")
-    top_df = pd.DataFrame(freq.most_common(15), columns=["単語", "出現回数"])
-    st.dataframe(top_df, hide_index=True, use_container_width=True)
+    top_words = [w for w, _ in freq.most_common(15)]
+    top_counts = {w: c for w, c in freq.most_common(15)}
+
+    selected_word = st.pills(
+        "単語をクリックすると回答を表示",
+        options=top_words,
+        format_func=lambda w: f"{w}（{top_counts[w]}）",
+        selection_mode="single",
+    )
+
+# ─── 選択単語の回答表示 ───────────────────────────────────
+if selected_word:
+    st.divider()
+    st.subheader(f"💬「{selected_word}」を含む回答")
+
+    def extract_sentences(text: str, word: str) -> list[str]:
+        """テキストから単語を含む文だけ抜き出す"""
+        # 句点・感嘆符・改行で文を分割
+        sentences = re.split(r"[。！？\n]+", text)
+        matched = [s.strip() for s in sentences if word in s and s.strip()]
+        return matched if matched else [text.strip()]
+
+    matched_rows = []
+    for row in data:
+        for i in col_indices:
+            if i < len(row):
+                cell = row[i]
+                if selected_word in cell:
+                    sentences = extract_sentences(cell, selected_word)
+                    for sent in sentences:
+                        # 選択単語をハイライト表示
+                        highlighted = sent.replace(
+                            selected_word,
+                            f"**:red[{selected_word}]**"
+                        )
+                        matched_rows.append(highlighted)
+
+    if matched_rows:
+        for i, text in enumerate(matched_rows, 1):
+            st.markdown(f"{i}. {text}")
+    else:
+        st.info("該当する回答が見つかりませんでした。")
 
 # ─── 自動更新 ────────────────────────────────────────────
 if auto_refresh:
