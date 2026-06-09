@@ -246,7 +246,7 @@ with st.sidebar:
     st.header("⚙️ 設定")
     sheet_url = st.text_area(
         "スプレッドシート URL",
-        value="https://docs.google.com/spreadsheets/d/1WkHCs-NsXj8Y2yuPdINwwQRhKH13ynjm5a5OoJLYRb8/edit",
+        value="https://docs.google.com/spreadsheets/d/1PIFEKv7ylfnfeIyCgqipTFgijwYPzRctfjjHk4179bA/edit",
         height=120,
     )
     refresh_interval = st.slider("自動更新間隔（秒）", 10, 300, 60, step=10)
