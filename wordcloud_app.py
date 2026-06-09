@@ -102,6 +102,47 @@ def get_worksheet_titles(sheet_url: str):
         return None, f"{type(e).__name__}: {e}"
 
 
+@st.cache_data(ttl=30, show_spinner=False)
+def cached_fetch_all(sheet_url: str, sheet_titles_key: str):
+    """全タブで共有するキャッシュ付きデータ取得（30秒TTL）。
+    sheet_titles_key は tuple をそのまま渡すと unhashable なので str 化して渡す。
+    """
+    import gspread, time as _time
+    sheet_titles = sheet_titles_key.split("|||")
+    client, err = get_gspread_client()
+    if err:
+        return None, None, err
+    for attempt in range(4):
+        try:
+            sh = client.open_by_url(sheet_url)
+            headers = None
+            all_data = []
+            for title in sheet_titles:
+                ws = sh.worksheet(title)
+                rows = ws.get_all_values()
+                if not rows:
+                    continue
+                if headers is None:
+                    headers = rows[0]
+                all_data.extend(rows[1:])
+            if headers is None:
+                return None, None, "選択したシートにデータがありません。"
+            return headers, all_data, None
+        except gspread.exceptions.APIError as e:
+            if e.response.status_code == 429 and attempt < 3:
+                _time.sleep(2 ** attempt)   # 1秒 → 2秒 → 4秒
+                continue
+            return None, None, f"APIエラー（レート制限）: しばらく待ってから再試行してください。"
+        except Exception as e:
+            return None, None, f"{type(e).__name__}: {e}"
+
+
+@st.cache_data(ttl=60, show_spinner=False)
+def cached_get_titles(sheet_url: str):
+    """シート名一覧もキャッシュ（60秒TTL）"""
+    return get_worksheet_titles(sheet_url)
+
+
 def fetch_sheet_data(sheet_url: str, sheet_titles: list[str]):
     """指定した複数シートのデータを合算して返す"""
     client, err = get_gspread_client()
@@ -262,9 +303,9 @@ if not sheet_url.strip():
     st.info("← スプレッドシートのURLを入力してください。")
     st.stop()
 
-# ─── シート一覧取得 ──────────────────────────────────────
+# ─── シート一覧取得（キャッシュ付き） ────────────────────
 with st.spinner("シート一覧を取得中..."):
-    all_titles, titles_err = get_worksheet_titles(sheet_url.strip())
+    all_titles, titles_err = cached_get_titles(sheet_url.strip())
 
 if titles_err or all_titles is None:
     st.error(f"シート取得エラー: {titles_err or '不明なエラー'}")
@@ -284,9 +325,10 @@ if not selected_sheets:
     st.warning("対象シートを選択してください。")
     st.stop()
 
-# ─── データ取得 ──────────────────────────────────────────
+# ─── データ取得（キャッシュ付き・全タブ共有） ────────────
 with st.spinner(f"データを取得中（{len(selected_sheets)}シート）..."):
-    headers, data, err = fetch_sheet_data(sheet_url.strip(), selected_sheets)
+    titles_key = "|||".join(selected_sheets)
+    headers, data, err = cached_fetch_all(sheet_url.strip(), titles_key)
 
 if err or headers is None:
     st.error(f"データ取得エラー: {err or 'ヘッダーが取得できませんでした'}")
