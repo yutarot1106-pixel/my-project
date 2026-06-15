@@ -65,6 +65,7 @@ def get_gspread_client():
     from google.oauth2.credentials import Credentials
     from google_auth_oauthlib.flow import InstalledAppFlow
     from google.auth.transport.requests import Request
+    from google.auth.exceptions import RefreshError
 
     SCOPES = [
         "https://www.googleapis.com/auth/spreadsheets.readonly",
@@ -76,14 +77,22 @@ def get_gspread_client():
 
     if token_path.exists():
         creds = Credentials.from_authorized_user_file(str(token_path), SCOPES)
+
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
+            try:
+                creds.refresh(Request())
+            except RefreshError:
+                # トークンが失効・失効済みの場合は削除して再認証
+                token_path.unlink(missing_ok=True)
+                creds = None
+
+        if not creds or not creds.valid:
             if not creds_path.exists():
                 return None, "credentials.json が見つかりません。"
             flow = InstalledAppFlow.from_client_secrets_file(str(creds_path), SCOPES)
             creds = flow.run_local_server(port=0)
+
         with open(token_path, "w") as f:
             f.write(creds.to_json())
 
