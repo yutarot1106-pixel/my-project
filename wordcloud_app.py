@@ -197,22 +197,37 @@ def tokenize(texts: list[str]) -> list[str]:
 
 
 def build_wordcloud(freq: dict, title: str) -> plt.Figure:
+    import numpy as np
     font = find_font()
+    W, H = 1400, 800
+
+    # タイトル用に左上の領域を確保するマスクを作成
+    # （白=255の領域には単語が描画されない）
+    mask = None
+    title_w_frac, title_h_frac = 0.0, 0.0
+    if title:
+        # タイトル文字数に応じて確保する幅を調整
+        title_w_frac = min(0.20 + len(title) * 0.05, 0.6)
+        title_h_frac = 0.18
+        mask = np.zeros((H, W), dtype=np.uint8)
+        mask[: int(H * title_h_frac), : int(W * title_w_frac)] = 255
+
     wc = WordCloud(
         font_path=font,
-        width=1400, height=800,
+        width=W, height=H,
         background_color="white",
         max_words=150,
         max_font_size=160, min_font_size=12,
         colormap="tab10",
         collocations=False,
+        mask=mask,
     ).generate_from_frequencies(freq)
 
     fig, ax = plt.subplots(figsize=(14, 8))
     ax.imshow(wc, interpolation="bilinear")
     ax.axis("off")
 
-    # タイトルを左上に白背景ボックスで重ねて描画（日本語フォントを明示指定）
+    # 確保した左上領域にタイトルを描画（日本語フォントを明示指定）
     if title:
         from matplotlib import font_manager
         title_font = font_manager.FontProperties(fname=font, size=54)
@@ -224,7 +239,7 @@ def build_wordcloud(freq: dict, title: str) -> plt.Figure:
             verticalalignment="top", horizontalalignment="left",
             color="#222222",
             bbox=dict(
-                facecolor="white", alpha=0.9,
+                facecolor="white", alpha=0.95,
                 edgecolor="#333333", linewidth=2.5,
                 boxstyle="round,pad=0.5,rounding_size=0.4",
             ),
