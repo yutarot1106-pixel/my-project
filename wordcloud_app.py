@@ -450,14 +450,14 @@ with col1:
         f"""
         <style>
         @keyframes wcFade{tick} {{
-            from {{ opacity: 0; transform: scale(0.985); }}
-            to   {{ opacity: 1; transform: scale(1); }}
+            0%   {{ opacity: 0; transform: scale(0.99); filter: blur(6px); }}
+            100% {{ opacity: 1; transform: scale(1);    filter: blur(0);   }}
         }}
         [data-testid="stImage"] img,
         [data-testid="stImageContainer"] img,
         [data-testid="stFullScreenFrame"] img,
         [data-testid="stExpandedFullScreenFrame"] img {{
-            animation: wcFade{tick} 1s ease-out;
+            animation: wcFade{tick} 1s ease-in-out both;
         }}
         </style>
         """,
