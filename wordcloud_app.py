@@ -442,19 +442,23 @@ with col1:
     plt.close(fig)
 
     # フェードイン効果（st.image を使うことで最大化ボタンも維持）
+    # 更新のたびにアニメーション名を変えて、同じ<img>要素でも強制的に再生させる
+    # （通常表示・フルスクリーン表示の両方で再生される）
+    st.session_state["render_tick"] = st.session_state.get("render_tick", 0) + 1
+    tick = st.session_state["render_tick"]
     st.markdown(
-        """
+        f"""
         <style>
-        @keyframes wcFade {
-            from { opacity: 0; transform: scale(0.985); }
-            to   { opacity: 1; transform: scale(1); }
-        }
+        @keyframes wcFade{tick} {{
+            from {{ opacity: 0; transform: scale(0.985); }}
+            to   {{ opacity: 1; transform: scale(1); }}
+        }}
         [data-testid="stImage"] img,
         [data-testid="stImageContainer"] img,
         [data-testid="stFullScreenFrame"] img,
-        [data-testid="stExpandedFullScreenFrame"] img {
-            animation: wcFade 0.8s ease-out;
-        }
+        [data-testid="stExpandedFullScreenFrame"] img {{
+            animation: wcFade{tick} 1s ease-out;
+        }}
         </style>
         """,
         unsafe_allow_html=True,
