@@ -14,6 +14,7 @@ import io
 import time
 from collections import Counter
 from pathlib import Path
+from copy import deepcopy
 
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
@@ -22,18 +23,15 @@ from wordcloud import WordCloud
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import pandas as pd
 
-# ─── 設定 ────────────────────────────────────────────────
+# ─── フォント候補 ────────────────────────────────────────
 FONT_CANDIDATES = [
-    # Windows
     r"C:\Windows\Fonts\msgothic.ttc",
     r"C:\Windows\Fonts\meiryo.ttc",
     r"C:\Windows\Fonts\YuGothR.ttc",
-    # Mac
     "/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc",
-    "/Library/Fonts/Osaka.ttf",
-    # Linux
     "/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf",
     "/usr/share/fonts/truetype/fonts-japanese-gothic.ttf",
 ]
@@ -45,6 +43,12 @@ STOP_WORDS = {
     "について", "ほう", "ほど", "だ", "た", "て", "今", "ここ",
 }
 
+DEFAULT_CHANNEL = {
+    "name": "チャネル 1",
+    "urls": ["https://docs.google.com/spreadsheets/d/1PIFEKv7ylfnfeIyCgqipTFgijwYPzRctfjjHk4179bA/edit"],
+    "min_count": 2,
+}
+
 # ─── ユーティリティ ─────────────────────────────────────
 
 @st.cache_resource
@@ -52,7 +56,7 @@ def get_tokenizer():
     return Tokenizer()
 
 
-def find_font() -> str | None:
+def find_font():
     for p in FONT_CANDIDATES:
         if os.path.exists(p):
             return p
@@ -60,7 +64,6 @@ def find_font() -> str | None:
 
 
 def get_gspread_client():
-    """gspreadクライアントを返す。初回はブラウザでGoogle認証を行う。"""
     import gspread
     from google.oauth2.credentials import Credentials
     from google_auth_oauthlib.flow import InstalledAppFlow
@@ -83,7 +86,6 @@ def get_gspread_client():
             try:
                 creds.refresh(Request())
             except RefreshError:
-                # トークンが失効・失効済みの場合は削除して再認証
                 token_path.unlink(missing_ok=True)
                 creds = None
 
@@ -100,7 +102,6 @@ def get_gspread_client():
 
 
 def get_worksheet_titles(sheet_url: str):
-    """スプレッドシート内の全シート名を返す"""
     client, err = get_gspread_client()
     if err:
         return None, err
@@ -111,12 +112,15 @@ def get_worksheet_titles(sheet_url: str):
         return None, f"{type(e).__name__}: {e}"
 
 
+@st.cache_data(ttl=60, show_spinner=False)
+def cached_get_titles(sheet_url: str):
+    return get_worksheet_titles(sheet_url)
+
+
 @st.cache_data(ttl=30, show_spinner=False)
 def cached_fetch_all(sheet_url: str, sheet_titles_key: str):
-    """全タブで共有するキャッシュ付きデータ取得（30秒TTL）。
-    sheet_titles_key は tuple をそのまま渡すと unhashable なので str 化して渡す。
-    """
-    import gspread, time as _time
+    import gspread
+    import time as _time
     sheet_titles = sheet_titles_key.split("|||")
     client, err = get_gspread_client()
     if err:
@@ -139,69 +143,28 @@ def cached_fetch_all(sheet_url: str, sheet_titles_key: str):
             return headers, all_data, None
         except gspread.exceptions.APIError as e:
             if e.response.status_code == 429 and attempt < 3:
-                _time.sleep(2 ** attempt)   # 1秒 → 2秒 → 4秒
+                _time.sleep(2 ** attempt)
                 continue
-            return None, None, f"APIエラー（レート制限）: しばらく待ってから再試行してください。"
+            return None, None, "APIエラー（レート制限）: しばらく待ってから再試行してください。"
         except Exception as e:
             return None, None, f"{type(e).__name__}: {e}"
 
 
-@st.cache_data(ttl=60, show_spinner=False)
-def cached_get_titles(sheet_url: str):
-    """シート名一覧もキャッシュ（60秒TTL）"""
-    return get_worksheet_titles(sheet_url)
-
-
-def fetch_sheet_data(sheet_url: str, sheet_titles: list[str]):
-    """指定した複数シートのデータを合算して返す"""
-    client, err = get_gspread_client()
-    if err:
-        return None, None, err
-    try:
-        sh = client.open_by_url(sheet_url)
-        headers = None
-        all_data = []
-        for title in sheet_titles:
-            ws = sh.worksheet(title)
-            rows = ws.get_all_values()
-            if not rows:
-                continue
-            if headers is None:
-                headers = rows[0]
-            # ヘッダーが異なるシートは列数を合わせてスキップせず取り込む
-            all_data.extend(rows[1:])
-        if headers is None:
-            return None, None, "選択したシートにデータがありません。"
-        return headers, all_data, None
-    except Exception as e:
-        return None, None, f"{type(e).__name__}: {e}"
-
-
 def clean_text(text: str) -> str:
-    """URLや記号などのノイズを除去してからトークナイズに渡す"""
-    # URLを除去
     text = re.sub(r"https?://\S+", "", text)
-    # メールアドレスを除去
     text = re.sub(r"\S+@\S+\.\S+", "", text)
-    # ランダムな英数字の羅列（6文字以上の大小混在英数字）を除去
     text = re.sub(r"\b[A-Za-z0-9]{6,}\b", "", text)
-    # 記号・特殊文字を除去（日本語・英数字・スペース以外）
     text = re.sub(r"[^\w\sぁ-んァ-ン一-龥ーａ-ｚＡ-Ｚ０-９]", " ", text)
     return text
 
 
 def is_noise(surface: str, base: str) -> bool:
-    """ノイズ判定：除外すべき単語ならTrue"""
-    # 英字のみで3文字以下
     if re.match(r"^[a-zA-Z]{1,3}$", surface):
         return True
-    # ランダムな英数字混在（大文字・小文字・数字が混在する5文字以上）
     if re.match(r"^(?=.*[A-Z])(?=.*[a-z])[A-Za-z0-9]{5,}$", surface):
         return True
-    # URLの残骸
     if surface in ("http", "https", "www", "com", "jp", "gle"):
         return True
-    # 記号のみ
     if re.match(r"^[^\w]+$", surface):
         return True
     return False
@@ -233,7 +196,7 @@ def tokenize(texts: list[str]) -> list[str]:
     return words
 
 
-def build_wordcloud(freq: dict) -> plt.Figure:
+def build_wordcloud(freq: dict, title: str) -> plt.Figure:
     font = find_font()
     wc = WordCloud(
         font_path=font,
@@ -244,11 +207,49 @@ def build_wordcloud(freq: dict) -> plt.Figure:
         colormap="tab10",
         collocations=False,
     ).generate_from_frequencies(freq)
+
     fig, ax = plt.subplots(figsize=(14, 8))
     ax.imshow(wc, interpolation="bilinear")
     ax.axis("off")
+
+    # タイトルを左上に白背景ボックスで重ねて描画（単語と被らないよう背景付き）
+    if title:
+        ax.text(
+            0.01, 0.97, title,
+            transform=ax.transAxes,
+            fontsize=28, fontweight="bold",
+            verticalalignment="top", horizontalalignment="left",
+            color="#222222",
+            bbox=dict(
+                facecolor="white", alpha=0.85,
+                edgecolor="none", pad=6,
+                boxstyle="round,pad=0.4",
+            ),
+        )
+
     plt.tight_layout(pad=0)
     return fig
+
+
+def fetch_channel_data(channel: dict):
+    """チャネル設定からテキスト・ヘッダー・データを取得"""
+    urls = [u.strip() for u in channel.get("urls", []) if u.strip()]
+    all_headers = None
+    all_data = []
+
+    for url in urls:
+        titles, err = cached_get_titles(url)
+        if err or not titles:
+            continue
+        titles_key = "|||".join(titles)
+        headers, data, err = cached_fetch_all(url, titles_key)
+        if err or headers is None:
+            continue
+        if all_headers is None:
+            all_headers = headers
+        all_data.extend(data)
+
+    return all_headers, all_data
 
 
 # ─── Streamlit UI ────────────────────────────────────────
@@ -289,143 +290,111 @@ python -m streamlit run wordcloud_app.py
 """)
     st.stop()
 
+# ─── セッションステート初期化 ────────────────────────────
+if "channels" not in st.session_state:
+    st.session_state.channels = [deepcopy(DEFAULT_CHANNEL)]
+
 # ─── サイドバー ──────────────────────────────────────────
 with st.sidebar:
     st.header("⚙️ 設定")
-    app_title = st.text_input(
-        "タイトル",
-        value="Google Forms リアルタイム ワードクラウド",
-        help="ページ上部に表示されるタイトルを自由に変更できます。",
-    )
+
+    # ── グローバル設定 ──
+    rotation_interval = st.slider("チャネル切替間隔（秒）", 5, 300, 30, step=5)
+    auto_rotate = st.toggle("自動切替", value=True)
+    data_refresh = st.slider("データ更新間隔（秒）", 10, 300, 60, step=10)
+    min_count = st.slider("最低出現回数", 1, 10, 2, step=1)
 
     st.divider()
 
-    # ─ 複数スプレッドシートURL管理 ──────────────────────────
-    if "sheet_urls" not in st.session_state:
-        st.session_state.sheet_urls = [
-            "https://docs.google.com/spreadsheets/d/1PIFEKv7ylfnfeIyCgqipTFgijwYPzRctfjjHk4179bA/edit"
-        ]
+    # ── チャネル管理 ──
+    st.markdown("**📺 チャネル設定**")
+    ch_to_delete = None
 
-    st.markdown("**📋 スプレッドシート URL**")
-    urls_to_delete = []
-    for i, url in enumerate(st.session_state.sheet_urls):
-        col_url, col_del = st.columns([10, 1])
-        with col_url:
-            st.session_state.sheet_urls[i] = st.text_input(
-                f"URL {i+1}",
-                value=url,
-                key=f"url_{i}",
-                label_visibility="collapsed",
+    for i, ch in enumerate(st.session_state.channels):
+        with st.expander(f"チャネル {i+1}：{ch['name']}", expanded=(i == 0)):
+            ch["name"] = st.text_input(
+                "タイトル", value=ch["name"], key=f"ch_name_{i}"
             )
-        with col_del:
-            if len(st.session_state.sheet_urls) > 1:
-                if st.button("✕", key=f"del_{i}"):
-                    urls_to_delete.append(i)
 
-    for i in sorted(urls_to_delete, reverse=True):
-        st.session_state.sheet_urls.pop(i)
+            # URL管理
+            st.caption("スプレッドシート URL")
+            url_to_delete = None
+            for j, url in enumerate(ch["urls"]):
+                c1, c2 = st.columns([10, 1])
+                with c1:
+                    ch["urls"][j] = st.text_input(
+                        f"URL {j+1}", value=url,
+                        key=f"ch_{i}_url_{j}",
+                        label_visibility="collapsed",
+                    )
+                with c2:
+                    if len(ch["urls"]) > 1 and st.button("✕", key=f"ch_{i}_del_url_{j}"):
+                        url_to_delete = j
+
+            if url_to_delete is not None:
+                ch["urls"].pop(url_to_delete)
+                st.rerun()
+
+            if st.button("＋ URL追加", key=f"ch_{i}_add_url"):
+                ch["urls"].append("")
+                st.rerun()
+
+            if len(st.session_state.channels) > 1:
+                if st.button(f"🗑 チャネル {i+1} を削除", key=f"del_ch_{i}"):
+                    ch_to_delete = i
+
+    if ch_to_delete is not None:
+        st.session_state.channels.pop(ch_to_delete)
         st.rerun()
 
-    if st.button("＋ スプレッドシートを追加"):
-        st.session_state.sheet_urls.append("")
+    if st.button("＋ チャネルを追加"):
+        n = len(st.session_state.channels) + 1
+        st.session_state.channels.append({
+            "name": f"チャネル {n}",
+            "urls": [""],
+            "min_count": 2,
+        })
         st.rerun()
 
-    st.divider()
-    refresh_interval = st.slider("自動更新間隔（秒）", 10, 300, 60, step=10)
-    auto_refresh = st.toggle("自動更新", value=True)
-    min_count = st.slider("最低出現回数", 1, 10, 2, step=1, help="この回数以上登場した単語だけ表示します")
-    st.button("🔄 今すぐ更新")
+# ─── 自動更新・チャネル切替 ──────────────────────────────
+num_channels = len(st.session_state.channels)
 
-st.title(f"☁️ {app_title}")
+if auto_rotate and num_channels > 1:
+    # チャネル切替タイマー（rotation_interval秒ごとにカウントアップ）
+    rotate_count = st_autorefresh(interval=rotation_interval * 1000, key="rotate")
+    current_idx = rotate_count % num_channels
+else:
+    current_idx = 0
+    # データ更新タイマーのみ
+    st_autorefresh(interval=data_refresh * 1000, key="data_refresh")
 
-# 非ブロッキング自動更新（タブごとに独立して動作）
-if auto_refresh:
-    st_autorefresh(interval=refresh_interval * 1000, key="autorefresh")
+channel = st.session_state.channels[current_idx]
 
-active_urls = [u.strip() for u in st.session_state.sheet_urls if u.strip()]
-if not active_urls:
-    st.info("← 左のサイドバーにスプレッドシートのURLを入力してください。")
-    st.stop()
-
-# ─── 全スプレッドシートからシート一覧取得 ────────────────
-all_sheet_options = {}   # {url: [sheet_title, ...]}
-fetch_errors = []
-
-with st.spinner("シート一覧を取得中..."):
-    for url in active_urls:
-        titles, err = cached_get_titles(url)
-        if err or titles is None:
-            fetch_errors.append(f"`{url[:60]}...` → {err}")
-        else:
-            all_sheet_options[url] = titles
-
-if fetch_errors:
-    for e in fetch_errors:
-        st.error(f"シート取得エラー: {e}")
-
-if not all_sheet_options:
-    st.stop()
-
-# ─── シート選択（スプレッドシートごと） ─────────────────
-selected_sheets_per_url = {}
-with st.sidebar:
-    st.divider()
-    for url, titles in all_sheet_options.items():
-        short = url.split("/d/")[1][:12] + "..." if "/d/" in url else url[:20]
-        selected = st.multiselect(
-            f"シート（{short}）",
-            options=titles,
-            default=titles,
-            key=f"sheets_{url}",
-        )
-        if selected:
-            selected_sheets_per_url[url] = selected
-
-if not selected_sheets_per_url:
-    st.warning("対象シートを選択してください。")
-    st.stop()
-
-# ─── 全スプレッドシートのデータを取得・合算 ─────────────
-all_headers = None
-all_data = []
-
-with st.spinner(f"データを取得中（{len(selected_sheets_per_url)}スプレッドシート）..."):
-    for url, sheets in selected_sheets_per_url.items():
-        titles_key = "|||".join(sheets)
-        headers, data, err = cached_fetch_all(url, titles_key)
-        if err or headers is None:
-            st.warning(f"取得スキップ: {url[:50]}... → {err}")
-            continue
-        if all_headers is None:
-            all_headers = headers
-        all_data.extend(data)
-
-if all_headers is None or not all_data:
-    st.error("有効なデータが取得できませんでした。")
-    st.stop()
-
-headers = all_headers
-data    = all_data
-
-# ─── 列選択 ─────────────────────────────────────────────
-with st.sidebar:
-    col_options = [h for h in headers if "タイムスタンプ" not in h and h]
-    selected_cols = st.multiselect(
-        "対象列（複数選択可）",
-        options=col_options,
-        default=col_options,
+# ─── チャネルインジケーター ──────────────────────────────
+if num_channels > 1:
+    dots = "  ".join(
+        f"🔵" if i == current_idx else "⚪"
+        for i in range(num_channels)
     )
+    st.caption(f"チャネル {current_idx + 1} / {num_channels}　　{dots}")
 
-if not selected_cols:
-    st.warning("対象列を選択してください。")
+# ─── データ取得 ──────────────────────────────────────────
+with st.spinner(f"「{channel['name']}」のデータを取得中..."):
+    headers, data = fetch_channel_data(channel)
+
+if not headers or not data:
+    st.warning(f"「{channel['name']}」のデータが取得できませんでした。URLとスプレッドシートの設定を確認してください。")
     st.stop()
 
-col_indices = [headers.index(c) for c in selected_cols if c in headers]
+# ─── テキスト収集 ────────────────────────────────────────
+col_options = [h for h in headers if "タイムスタンプ" not in h and h]
 texts = []
 for row in data:
-    for i in col_indices:
-        if i < len(row) and row[i].strip():
-            texts.append(row[i])
+    for h in col_options:
+        if h in headers:
+            i = headers.index(h)
+            if i < len(row) and row[i].strip():
+                texts.append(row[i])
 
 if not texts:
     st.warning("有効な回答がまだありません。")
@@ -438,17 +407,16 @@ if not words:
     st.stop()
 
 freq = Counter(words)
-# 最低出現回数でフィルタ（Counterのまま保持）
 freq = Counter({w: c for w, c in freq.items() if c >= min_count})
 
 if not freq:
-    st.warning(f"{min_count}回以上登場する単語がありません。左の「最低出現回数」を下げてみてください。")
+    st.warning(f"{min_count}回以上登場する単語がありません。「最低出現回数」を下げてみてください。")
     st.stop()
 
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    fig = build_wordcloud(freq)
+    fig = build_wordcloud(freq, channel["name"])
     st.pyplot(fig)
 
     buf = io.BytesIO()
@@ -479,40 +447,34 @@ with col2:
         default=None,
     )
 
-# 選択が外れたら表示をリセット
+# ─── 選択単語の回答表示 ──────────────────────────────────
 if not selected_word:
     st.stop()
 
-# ─── 選択単語の回答表示 ───────────────────────────────────
-if selected_word:
-    st.divider()
-    st.subheader(f"💬「{selected_word}」を含む回答")
+st.divider()
+st.subheader(f"💬「{selected_word}」を含む回答")
 
-    def extract_sentences(text: str, word: str) -> list[str]:
-        """テキストから単語を含む文だけ抜き出す"""
-        # 句点・感嘆符・改行で文を分割
-        sentences = re.split(r"[。！？\n]+", text)
-        matched = [s.strip() for s in sentences if word in s and s.strip()]
-        return matched if matched else [text.strip()]
+col_indices = [headers.index(h) for h in col_options if h in headers]
 
-    matched_rows = []
-    for row in data:
-        for i in col_indices:
-            if i < len(row):
-                cell = row[i]
-                if selected_word in cell:
-                    sentences = extract_sentences(cell, selected_word)
-                    for sent in sentences:
-                        # 選択単語をハイライト表示
-                        highlighted = sent.replace(
-                            selected_word,
-                            f"**:red[{selected_word}]**"
-                        )
-                        matched_rows.append(highlighted)
+def extract_sentences(text: str, word: str) -> list[str]:
+    sentences = re.split(r"[。！？\n]+", text)
+    matched = [s.strip() for s in sentences if word in s and s.strip()]
+    return matched if matched else [text.strip()]
 
-    if matched_rows:
-        for i, text in enumerate(matched_rows, 1):
-            st.markdown(f"{i}. {text}")
-    else:
-        st.info("該当する回答が見つかりませんでした。")
+matched_rows = []
+for row in data:
+    for i in col_indices:
+        if i < len(row):
+            cell = row[i]
+            if selected_word in cell:
+                for sent in extract_sentences(cell, selected_word):
+                    highlighted = sent.replace(
+                        selected_word, f"**:red[{selected_word}]**"
+                    )
+                    matched_rows.append(highlighted)
 
+if matched_rows:
+    for i, text in enumerate(matched_rows, 1):
+        st.markdown(f"{i}. {text}")
+else:
+    st.info("該当する回答が見つかりませんでした。")
