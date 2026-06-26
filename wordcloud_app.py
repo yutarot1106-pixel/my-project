@@ -207,8 +207,8 @@ def build_wordcloud(freq: dict, title: str) -> plt.Figure:
     title_w_frac, title_h_frac = 0.0, 0.0
     if title:
         # タイトル文字数に応じて確保する幅を調整
-        title_w_frac = min(0.20 + len(title) * 0.05, 0.6)
-        title_h_frac = 0.18
+        title_w_frac = min(0.15 + len(title) * 0.038, 0.55)
+        title_h_frac = 0.13
         mask = np.zeros((H, W), dtype=np.uint8)
         mask[: int(H * title_h_frac), : int(W * title_w_frac)] = 255
 
@@ -230,7 +230,7 @@ def build_wordcloud(freq: dict, title: str) -> plt.Figure:
     # 確保した左上領域にタイトルを描画（日本語フォントを明示指定）
     if title:
         from matplotlib import font_manager
-        title_font = font_manager.FontProperties(fname=font, size=54)
+        title_font = font_manager.FontProperties(fname=font, size=40)
         title_font.set_weight("bold")
         ax.text(
             0.02, 0.95, title,
