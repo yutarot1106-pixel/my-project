@@ -215,18 +215,18 @@ def build_wordcloud(freq: dict, title: str) -> plt.Figure:
     # タイトルを左上に白背景ボックスで重ねて描画（日本語フォントを明示指定）
     if title:
         from matplotlib import font_manager
-        title_font = font_manager.FontProperties(fname=font, size=40)
+        title_font = font_manager.FontProperties(fname=font, size=54)
         title_font.set_weight("bold")
         ax.text(
-            0.01, 0.97, title,
+            0.02, 0.95, title,
             transform=ax.transAxes,
             fontproperties=title_font,
             verticalalignment="top", horizontalalignment="left",
             color="#222222",
             bbox=dict(
-                facecolor="white", alpha=0.85,
-                edgecolor="none", pad=6,
-                boxstyle="round,pad=0.4",
+                facecolor="white", alpha=0.9,
+                edgecolor="#333333", linewidth=2.5,
+                boxstyle="round,pad=0.5,rounding_size=0.4",
             ),
         )
 
