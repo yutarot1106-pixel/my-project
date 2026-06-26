@@ -319,7 +319,7 @@ with st.sidebar:
     # ── グローバル設定 ──
     rotation_interval = st.slider("チャネル切替間隔（秒）", 5, 300, 30, step=5)
     auto_rotate = st.toggle("自動切替", value=True)
-    data_refresh = st.slider("データ更新間隔（秒）", 10, 300, 60, step=10)
+    data_refresh = st.slider("データ更新間隔（秒）", 5, 300, 60, step=5)
     min_count = st.slider("最低出現回数", 1, 10, 2, step=1)
 
     st.divider()
@@ -377,14 +377,15 @@ with st.sidebar:
 # ─── 自動更新・チャネル切替 ──────────────────────────────
 num_channels = len(st.session_state.channels)
 
+# データ更新タイマーは常に動かす
+st_autorefresh(interval=data_refresh * 1000, key="data_refresh")
+
 if auto_rotate and num_channels > 1:
     # チャネル切替タイマー（rotation_interval秒ごとにカウントアップ）
     rotate_count = st_autorefresh(interval=rotation_interval * 1000, key="rotate")
     current_idx = rotate_count % num_channels
 else:
     current_idx = 0
-    # データ更新タイマーのみ
-    st_autorefresh(interval=data_refresh * 1000, key="data_refresh")
 
 channel = st.session_state.channels[current_idx]
 
