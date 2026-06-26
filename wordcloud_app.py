@@ -457,7 +457,7 @@ with col1:
         [data-testid="stImageContainer"] img,
         [data-testid="stFullScreenFrame"] img,
         [data-testid="stExpandedFullScreenFrame"] img {{
-            animation: wcFade{tick} 1s ease-in-out both;
+            animation: wcFade{tick} 0.7s ease-in-out both;
         }}
         </style>
         """,
