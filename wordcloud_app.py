@@ -436,10 +436,30 @@ col1, col2 = st.columns([3, 1])
 
 with col1:
     fig = build_wordcloud(freq, channel["name"])
-    st.pyplot(fig)
 
     buf = io.BytesIO()
     fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
+
+    # フェードイン効果付きで表示（更新のたびにアニメーションが再生される）
+    import base64
+    img_b64 = base64.b64encode(buf.getvalue()).decode()
+    st.markdown(
+        f"""
+        <style>
+        @keyframes wcFade {{
+            from {{ opacity: 0; transform: scale(0.985); }}
+            to   {{ opacity: 1; transform: scale(1); }}
+        }}
+        .wc-fade {{
+            animation: wcFade 0.8s ease-out;
+            width: 100%;
+        }}
+        </style>
+        <img class="wc-fade" src="data:image/png;base64,{img_b64}" />
+        """,
+        unsafe_allow_html=True,
+    )
+
     st.download_button(
         "📥 PNGで保存",
         data=buf.getvalue(),
