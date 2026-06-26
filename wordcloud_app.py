@@ -449,7 +449,10 @@ with col1:
             from { opacity: 0; transform: scale(0.985); }
             to   { opacity: 1; transform: scale(1); }
         }
-        [data-testid="stImage"] img {
+        [data-testid="stImage"] img,
+        [data-testid="stImageContainer"] img,
+        [data-testid="stFullScreenFrame"] img,
+        [data-testid="stExpandedFullScreenFrame"] img {
             animation: wcFade 0.8s ease-out;
         }
         </style>
