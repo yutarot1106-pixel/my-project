@@ -317,6 +317,8 @@ with st.sidebar:
     st.header("⚙️ 設定")
 
     # ── グローバル設定 ──
+    update_on = st.toggle("🔄 更新を有効化", value=True,
+                          help="オフにするとチャネル切替・ワードクラウド更新を停止します")
     rotation_interval = st.slider("チャネル切替間隔（秒）", 5, 300, 30, step=5)
     auto_rotate = st.toggle("自動切替", value=True)
     data_refresh = st.slider("データ更新間隔（秒）", 5, 300, 60, step=5)
@@ -377,15 +379,30 @@ with st.sidebar:
 # ─── 自動更新・チャネル切替 ──────────────────────────────
 num_channels = len(st.session_state.channels)
 
-# データ更新タイマーは常に動かす
-st_autorefresh(interval=data_refresh * 1000, key="data_refresh")
+if update_on:
+    # データ更新タイマー
+    st_autorefresh(interval=data_refresh * 1000, key="data_refresh")
 
-if auto_rotate and num_channels > 1:
-    # チャネル切替タイマー（rotation_interval秒ごとにカウントアップ）
-    rotate_count = st_autorefresh(interval=rotation_interval * 1000, key="rotate")
-    current_idx = rotate_count % num_channels
+    if auto_rotate and num_channels > 1:
+        # チャネル切替タイマー（rotation_interval秒ごとにカウントアップ）
+        rotate_count = st_autorefresh(interval=rotation_interval * 1000, key="rotate")
+        current_idx = rotate_count % num_channels
+    else:
+        current_idx = st.session_state.get("manual_idx", 0) % num_channels
 else:
-    current_idx = 0
+    # 更新停止中：自動更新せず、手動でチャネルを選択
+    st.info("⏸ 更新を停止中です。サイドバーの「更新を有効化」で再開できます。")
+    if num_channels > 1:
+        current_idx = st.selectbox(
+            "表示するチャネル",
+            options=list(range(num_channels)),
+            format_func=lambda i: f"チャネル {i+1}：{st.session_state.channels[i]['name']}",
+            index=st.session_state.get("manual_idx", 0) % num_channels,
+            key="manual_channel_select",
+        )
+    else:
+        current_idx = 0
+    st.session_state["manual_idx"] = current_idx
 
 channel = st.session_state.channels[current_idx]
 
