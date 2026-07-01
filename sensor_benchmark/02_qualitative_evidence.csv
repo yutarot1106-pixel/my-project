@@ -1,0 +1,36 @@
+item,sensor,source_type,evidence,quantitative_proxy,source_url
+雨霧,LiDAR,査読論文(IEEE),VTT霧チャンバ実験「Automotive LiDAR performance verification in fog and rain」905nm/1550nm LiDARを霧・雨で検証。検知性能が最大50%低下,霧視程50-150m・降雨10-40mm/hで検知距離半減級,https://ieeexplore.ieee.org/document/8569624/
+雨霧,LiDAR,査読論文(arXiv),「What happens to a ToF LiDAR in fog?」ToF LiDARの霧中挙動を体系分析。近距離クラッタ(偽エコー)と減衰の二重劣化,視程<500mで波長依存性ほぼ消失(905nmの優位性なし),https://arxiv.org/pdf/2003.06660
+雨霧,LiDAR,査読論文(Sensors/PMC),実道路走行での雨・霧によるLiDAR検知性能劣化の実証分析。劣化順: 小雨<弱霧<強雨<濃霧,豪雨30-40mm/h・濃霧視程≤50mで最大劣化(検知率~50%減),https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10051412/
+雨霧,LiDAR,査読論文(Sensors/PMC),雨・霧が車載LiDAR性能に与える影響のモデル化手法(Mie散乱ベース),降雨強度・視程から検知距離低下を予測するモデル提示,https://pmc.ncbi.nlm.nih.gov/articles/PMC10422612/
+雨霧,LiDAR,サーベイ論文(arXiv),悪天候下LiDAR知覚のサーベイ。霧>雨の順で劣化が大きいと整理,905nm光の霧減衰は視程100m級で~100dB/kmオーダー(光学Kimモデル),https://arxiv.org/pdf/2304.06312
+雨霧,LiDAR,査読論文(Sensors/PMC),雨中LiDARの材料・光学的視点からの分析。雨滴による吸収・散乱で信号減衰,降雨中は反射強度・点群密度が低下(降雨強度依存),https://pmc.ncbi.nlm.nih.gov/articles/PMC11124791/
+雨霧,ミリ波,標準(ITU-R系)+査読論文,77GHz帯の雨減衰はITU-R P.838系モデルで評価可能。「77GHz automotive radar as rain gauge」研究,77GHzで~0.4dB/km級(小雨)。参考: 94GHzで1mm/h=0.8dB/km・4mm/h=3dB/km・16mm/h=9dB/km,https://www.researchgate.net/publication/324477200_On_the_Use_of_a_77_GHz_Automotive_Radar_as_a_Microwave_Rain_Gauge
+雨霧,ミリ波,査読論文(Springer),気候風洞での77GHz豪雨減衰の実測検証(E-band),豪雨条件でも片道減衰はdB/kmオーダーで測距距離への影響は限定的(200m往復で数dB),https://link.springer.com/article/10.1007/s12567-015-0100-6
+雨霧,ミリ波,技術総説(ScienceDirect),ミリ波レーダは霧・煙・粉塵など光学視界不良時に特に有効。霧滴(<0.1mm)は波長比で極小のためほぼ不感,晴天時基礎減衰: 乾燥空気0.07dB/km+水蒸気0.36dB/km@77GHz,https://www.sciencedirect.com/topics/engineering/millimeter-wave-radar
+雨霧,ミリ波,査読論文,商用77GHzレーダにおける雨クラッタ検出の分析。豪雨時は雨滴エコーが偽目標として現れうる,雨クラッタは近距離に集中(減衰より偽検出が主課題),https://www.researchgate.net/publication/323135471_Analysis_of_rain_clutter_detections_in_commercial_77_GHz_automotive_radar
+雨霧,超音波,メーカー技術資料(P+F),超音波センサへの外的影響FAQ: 雨滴・気流・温度勾配が測定に影響。ただし小雨では概ね動作,音速は温度0.17%/Kで変化(温度補償必須)。強風・豪雨で信号散乱,https://blog.pepperl-fuchs.com/en/2018/ultrasonic-sensor-faq-external-influences-on-sensor-operation/
+雨霧,超音波,メーカー技術資料(Senix),超音波センサの精度への環境影響: 温度・気流・湿度。霧自体の減衰は小さい,温度補償で±0.1%級を維持。無補償なら10°C変化で~1.7%誤差,https://senix.com/ultrasonic-sensor-accuracy/
+雨霧,超音波,業界技術記事,パーキングセンサの限界: 雨滴の散乱・着雪/着氷でビーム遮断・豪雨誤検出,着雪・着氷で完全遮断(機能不全)。小雨は影響軽微,https://www.osenon-ultrasonicsensors.com/blog/are-parking-sensors-accurate-259870.html
+雨霧,ステレオ,査読論文(CVPR2020),「Seeing Through Fog Without Seeing Fog」DENSEデータセット。カメラは濃霧で大幅劣化しセンサ融合が必要,霧視程<50mでカメラ系の検知距離は視程相当まで低下(機能不全級),https://arxiv.org/abs/1902.08913
+雨霧,ステレオ,査読論文(Sensors/PMC),自動運転センサの悪天候脆弱性総説: カメラは雨滴付着・霧散乱・ワイパー範囲外で劣化,雨天で物体検出精度が有意に低下(降雨強度依存)。レンズ水滴で局所不能,https://pmc.ncbi.nlm.nih.gov/articles/PMC8402409/
+太陽光,LiDAR,メーカーデータシート(Ouster),OS1/OS2データシートはレンジ仕様を「100klx直射日光下・10%反射率・>90%検出確率」で定義(日射が仕様条件),OS2: 10%反射・100klxで80m(80%反射なら210m)→強日射がレンジ規定要因,https://data.ouster.io/downloads/datasheets/datasheet-rev7-v2p5-os2.pdf
+太陽光,LiDAR,メーカー技術資料(Allegro),背景光ショットノイズにより検出閾値を上げる必要→実効レンジ低下,基準日射100klx→56klxに緩めるとレンジ150m→200mに改善(~33%増),https://www.allegromicro.com/en/insights-and-innovations/technical-documents/p0177-lidar-effective-range
+太陽光,LiDAR,メーカー技術資料(TI),DLPによるLiDAR環境光低減ホワイトペーパー: 太陽光は最大のノイズ源,曇天時は直射日光(100klx)比で10倍の性能余裕,https://www.ti.com/lit/pdf/dlpa093
+太陽光,LiDAR,査読論文(MDPI),閾値検出に基づくLiDAR背景光ノイズ適応抑制手法,背景光>閾値で誤検出率上昇→適応閾値で抑制(残存レンジ低下あり),https://www.mdpi.com/2076-3417/13/6/3772
+太陽光,LiDAR,メーカーデータシート(Hesai),AT128ユーザマニュアル: レンジ仕様は日射条件付きで規定,200m@10%反射(日射条件明記),https://www.hesaitech.com/wp-content/uploads/2025/04/AT128P_User_Manual_A02-en-250410.pdf
+太陽光,ステレオ,メーカー技術資料(Luxonis),アクティブIR投光は屋外日中では太陽光に埋もれ実質無効(パッシブステレオとして動作),IR投光の効果は屋内/夜間限定。日中は輝度飽和・フレアが誤差要因,https://docs.luxonis.com/hardware/platform/depth/depth-accuracy
+太陽光,ステレオ,メーカー製品資料(Intel),RealSense D455はパッシブステレオのため屋外日光下でも深度取得可(ただし逆光・フレアで品質低下),直射逆光時は視差マッチング品質低下(HDR併用推奨),https://www.intelrealsense.com/depth-camera-d455/
+太陽光,ステレオ,業界技術記事,車載カメラはWDR/HDR(120dB級)でトンネル出口・逆光に対応するが完全ではない,通常センサのDR~70dB→HDRセンサ120dB超で逆光耐性改善,https://www.asadria.com/en/what-makes-a-security-camera-good-for-low-light/
+太陽光,ミリ波,技術総説(ScienceDirect),ミリ波は光学現象(日射・逆光)に不感,太陽光による性能低下なし(0%),https://www.sciencedirect.com/topics/engineering/millimeter-wave-radar
+太陽光,超音波,メーカー技術資料(P+F),超音波は音響方式のため光学的影響(日射)を受けない。ただし直射による筐体温度上昇は温度補償で対応,日射直接影響なし(温度間接影響のみ・補償可),https://blog.pepperl-fuchs.com/en/2018/ultrasonic-sensor-faq-external-influences-on-sensor-operation/
+暗闇,ステレオ,業界技術記事(可視カメラ一般),可視光カメラの動作照度は~10lux以上。低照度専用機で10lux未満に対応(高コスト・低フレームレート),一般カメラ動作域10-100000lux。IRモード切替は5-10lux(日没相当),https://www.asmag.com/mobile/article_detail_amp.aspx?aid=16646
+暗闇,ステレオ,メーカー製品資料(Intel),D435/D455はIRプロジェクタ搭載のアクティブステレオ→完全暗闇でも近距離深度取得可(=補助光要),IR投光到達距離内(数m)に限定。パッシブ動作は不可,https://www.intelrealsense.com/depth-camera-d435i/
+暗闇,ステレオ,メーカー技術資料(Luxonis),OAK-D ProはIRレーザドットプロジェクタ+IR照明で暗所深度対応(=補助光要),暗所での深度は投光到達域(~数m)に限定,https://docs.luxonis.com/hardware/platform/depth/depth-accuracy
+暗闇,ステレオ,メーカー製品資料(Stereolabs),ZEDシリーズはパッシブステレオ(投光なし)→暗闇では深度取得不可,最低照度~数lux以下で視差計算破綻,https://www.stereolabs.com/products
+暗闇,ステレオ,車載量産例(SUBARU),EyeSight(可視ステレオ)は夜間・暗所で歩行者検知性能が低下する旨を取扱説明書に明記(ヘッドライト=補助光前提),ヘッドライト照射域外の対象は検知不可,https://www.subaru.co.jp/safety/
+暗闇,LiDAR,メーカーデータシート(Ouster),自発光(905nm/850nmレーザ)のため照度条件不要。夜間はむしろ背景光ノイズが減り性能向上,データシートに最低照度規定なし(0luxで全性能),https://data.ouster.io/downloads/datasheets/datasheet-rev7-v3p1-os1.pdf
+暗闇,LiDAR,メーカー技術資料(Allegro),背景光が減ると検出閾値を下げられ実効レンジ増加(夜間>昼間),100klx→低照度でレンジ~33%以上改善の実例,https://www.allegromicro.com/en/insights-and-innovations/technical-documents/p0177-lidar-effective-range
+暗闇,ミリ波,技術総説(ScienceDirect),電波方式のため照度と無関係に全性能維持,0luxで性能低下なし,https://www.sciencedirect.com/topics/engineering/millimeter-wave-radar
+暗闇,ミリ波,メーカーデータシート(TI),AWR2944等のデータシートに照度条件は存在しない(規定不要),照度非依存,https://www.ti.com/lit/ds/symlink/awr2944.pdf
+暗闇,超音波,メーカー技術資料(P+F),音響方式のため照度と無関係。透明・黒色対象も光学系と異なり検知可,0luxで性能低下なし,https://blog.pepperl-fuchs.com/en/2018/ultrasonic-sensor-faq-external-influences-on-sensor-operation/

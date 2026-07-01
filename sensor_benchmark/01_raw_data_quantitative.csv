@@ -1,0 +1,96 @@
+sensor,maker,model,grade_use,range_min_m,range_max_m,range_cond,res_cm,res_cond,ang_deg,ang_cond,size_mm,weight_g,price_usd,price_cond,source_url
+超音波,汎用(SparkFun掲載),HC-SR04,ホビー/教育,0.02,4,カタログ(平面ターゲット),0.3,データシート分解能3mm,15,ビーム全角(方位測定不可),45x20x15,8.5,4,SparkFun単品参考,https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf
+超音波,汎用,JSN-SR04T,ホビー/防水プローブ,0.25,4.5,カタログ,0.5,データシート,60,ビーム全角(方位測定不可),プローブφ23.5,~40,8,通販参考価格,https://www.dfrobot.com/
+超音波,MaxBotix,MB1010 LV-MaxSonar-EZ1,ロボット/汎用,0,6.45,カタログ(42kHz),2.54,分解能1inch,,ビームパターン公表(方位測定不可),22x20x16,4.3,34.95,メーカー直販,https://maxbotix.com/products/mb1010
+超音波,MaxBotix,MB1240 XL-MaxSonar-EZ4,ロボット/屋外,0,7.65,カタログ,1,分解能1cm,,狭ビーム(方位測定不可),22x20x16,5.9,49.95,メーカー直販,https://maxbotix.com/products/mb1240
+超音波,MaxBotix,MB1043 HRLV-MaxSonar-EZ4,近距離高分解能,0.3,5,カタログ,0.1,分解能1mm,,狭ビーム(方位測定不可),22x20x16,5.9,39.95,メーカー直販,https://maxbotix.com/products/mb1043
+超音波,MaxBotix,MB7360 HRXL-MaxSonar-WR,産業/屋外IP67,0.3,5,カタログ,0.1,分解能1mm,,狭ビーム(方位測定不可),φ41x86,~60,134.95,メーカー直販,https://maxbotix.com/products/mb7360
+超音波,MaxBotix,MB7369 HRXL-MaxSonar-WRM,産業/屋外IP67,0.3,10,カタログ(9.99m),0.1,分解能1mm,,狭ビーム(方位測定不可),φ41x86,~60,154.95,メーカー直販,https://maxbotix.com/products/mb7369
+超音波,MaxBotix,MB1260 XL-MaxSonar-EZL0,長距離型,0,10.68,カタログ,2,分解能1cm系列,,広ビーム(方位測定不可),29x20x16,~6,52.95,メーカー直販,https://maxbotix.com/products/mb1260
+超音波,村田製作所,MA40S4S(送受信子),車載/汎用トランスデューサ,0.2,4,カタログ検知目安,,,80,指向性全角80°(-6dB・方位測定不可),φ9.9x7.1,0.7,1.5,DigiKey参考,https://www.murata.com/en-global/products/sensor/ultrasonic
+超音波,Bosch,超音波センサ第6世代(USS),車載パーキング/量産OEM,0.15,5.5,カタログ,,,~70,広指向(方位測定不可),φ~17ヘッド,~10,~12,OEM量産推定(業界記事),https://www.bosch-mobility.com/en/solutions/sensors/ultrasonic-sensor/
+超音波,Pepperl+Fuchs,UC2000-30GM-IUR2-V15,産業FA,0.08,2,カタログ,,,,±ビーム角図公表(方位測定不可),M30x107,~150,~380,代理店参考,https://www.pepperl-fuchs.com/en/products-gp25581/
+超音波,Pepperl+Fuchs,UC6000-30GM-IUR2-V15,産業FA長距離型,0.35,6,カタログ,,,,ビーム角図公表(方位測定不可),M30x131,~170,~450,代理店参考,https://www.pepperl-fuchs.com/en/products-gp25581/4223
+超音波,Pepperl+Fuchs,UC500-30GM-IUR2,産業FA近距離,0.03,0.5,カタログ,,,,狭ビーム(方位測定不可),M30,~150,~350,代理店参考,https://www.pepperl-fuchs.com/
+超音波,microsonic,mic+600/D/TC,産業FA長距離型,0.6,8,カタログ,0.018,分解能0.18mm(温補付),,ビーム角図公表(方位測定不可),M30x155,~180,~520,代理店参考,https://www.microsonic.de/en/distance-sensors/cylindrical/micplus/standard-sensors/standard-sensors/micplus600dtc.htm
+超音波,microsonic,mic+35/IU/TC,産業FA近距離,0.065,0.6,カタログ,0.005,分解能0.05mm,,狭ビーム(方位測定不可),M30x81,~120,~400,代理店参考,https://www.microsonic.de/en/distance-sensors/cylindrical/micplus.htm
+超音波,microsonic,lcs+340/DD,産業FA,0.35,5,カタログ,0.018,分解能0.18mm,,ビーム角図公表(方位測定不可),M30,~170,~480,代理店参考,https://www.microsonic.de/en/distance-sensors/cylindrical/lcsplus.htm
+超音波,SICK,UM30-2シリーズ(最長型),産業FA長距離型,0.35,8,カタログ,0.018,分解能≥0.18mm,,ビーム角図公表(方位測定不可),M30,~200,~600,代理店参考,https://www.sick.com/us/en/catalog/products/detection-sensors/ultrasonic-sensors/um30/c/g185679
+超音波,Banner,T30UXDA U-GAGE,産業FA,0.3,3,カタログ,,,,ビーム角図公表(方位測定不可),30mm筒,~150,~330,代理店参考,https://www.bannerengineering.com/us/en/products/sensors/ultrasonic-sensors.html
+超音波,Banner,QT50ULBQ6,産業FA長距離型,0.2,8,カタログ,,,,ビーム角図公表(方位測定不可),50mm角,~250,~500,代理店参考,https://www.bannerengineering.com/us/en/products/sensors/ultrasonic-sensors.html
+超音波,Banner,S18UUAQ,産業FA近距離,0.03,0.3,カタログ,,,,狭ビーム(方位測定不可),M18,~50,~180,代理店参考,https://www.bannerengineering.com/us/en/products/sensors/ultrasonic-sensors.html
+超音波,Baumer,UNDK 30U6103/S14,産業FA,0.1,1,カタログ,0.03,分解能0.3mm,,ビーム角図公表(方位測定不可),30mm角,~90,~300,代理店参考,https://www.baumer.com/us/en/product-overview/distance-measurement/ultrasonic-distance-sensors
+超音波,Senix,ToughSonic 14,産業/水位計測,0.1,4.3,カタログ,0.0086,分解能0.086mm(内部),,ビーム角図公表(方位測定不可),M30x81,~230,~700,メーカー参考,https://senix.com/ultrasonic-sensor-accuracy/
+超音波,Toposens,ECHO ONE,ロボット3D超音波(例外的に方位可),0.2,3,カタログ,,,~5,3Dエコーロケーションで方位推定可(精度~数°),58x46x21,~50,~1500,メーカー参考,https://toposens.com/
+超音波,SensComp,600 Series(旧Polaroid),産業/計測,0.15,10.7,カタログ(35ft),,,15,ビーム全角15°(方位測定不可),φ43,~10,~40,メーカー参考,https://senscomp.com/
+ステレオ,Intel,RealSense D405,近接マニピュレーション,0.07,0.5,推奨レンジ(カタログ),1,誤差<2%@0.5m相当,0.068,IFOV=87°/1280px,42x42x23,~60,258,メーカー直販,https://www.intelrealsense.com/depth-camera-d405/
+ステレオ,Intel,RealSense D415,屋内近距離,0.5,10,カタログ最大(推奨0.5-3m),4,誤差<2%@2m=4cm,0.051,IFOV=65°/1280px,99x20x23,72,272,メーカー直販,https://www.intelrealsense.com/depth-camera-d415/
+ステレオ,Intel,RealSense D435i,ロボット汎用,0.3,10,カタログ最大(推奨0.3-3m),4,誤差<2%@2m=4cm,0.068,IFOV=87°/1280px,90x25x25,72,334,メーカー直販,https://www.intelrealsense.com/depth-camera-d435i/
+ステレオ,Intel,RealSense D455,ロボット中距離,0.6,20,カタログ最大(推奨0.6-6m),8,誤差<2%@4m=8cm,0.068,IFOV=87°/1280px,124x26x29,~103,419,メーカー直販,https://www.intelrealsense.com/depth-camera-d455/
+ステレオ,Stereolabs,ZED(初代),屋外ロボット,0.5,20,カタログ,,,0.041,IFOV=90°/2208px,175x30x33,159,449,メーカー直販,https://www.stereolabs.com/products
+ステレオ,Stereolabs,ZED Mini,AR/近距離,0.1,15,カタログ,,,0.045,IFOV≈90°/2208px,124.5x30.5x26.5,62.9,399,メーカー直販,https://www.stereolabs.com/products
+ステレオ,Stereolabs,ZED 2,屋外ロボット,0.2,20,カタログ,,,0.05,IFOV=110°/2208px,175x30x33,166,449,メーカー直販,https://www.stereolabs.com/products
+ステレオ,Stereolabs,ZED 2i,屋外ロボット(IP66),0.2,20,カタログ(NEURALで~40m),2.4,誤差<1%@3m(実測0.8%=2.4cm),0.05,IFOV=110°/2208px,175.9x30.3x43.1,~230,499,メーカー直販,https://www.stereolabs.com/products
+ステレオ,Stereolabs,ZED X,車載/AMR(GMSL2),0.3,20,カタログ,,,0.057,IFOV=110°/1920px,~155x40x50,~195,~599,メーカー参考,https://www.stereolabs.com/products
+ステレオ,Luxonis,OAK-D S2,エッジAI+深度,0.7,12,カタログ(75mm基線),8,誤差<2%@4m(docs),0.056,IFOV=72°/1280px,110x54x33,~91,249,メーカー直販,https://docs.luxonis.com/hardware/platform/depth/depth-accuracy
+ステレオ,Luxonis,OAK-D Pro(アクティブIR),エッジAI+暗所対応,0.7,12,カタログ,8,誤差<2%@4m(docs),0.056,IFOV=72°/1280px,110x54x33,~120,~399,メーカー参考,https://docs.luxonis.com/hardware/platform/depth/depth-accuracy
+ステレオ,Luxonis,OAK-D LR(長基線15cm),中距離屋外,1,20,カタログ(docs),,,0.03,IFOV(1200P/狭FOV),~170x60x40,~250,~449,メーカー参考,https://docs.luxonis.com/hardware/platform/depth/depth-accuracy
+ステレオ,e-con Systems,Tara(基線60mm),組込WVGA,0.5,3,カタログ,,,0.08,IFOV=60°/752px,100x30x35,~80,249,メーカー参考,https://www.e-consystems.com/3d-usb-stereo-camera.asp
+ステレオ,e-con Systems,STEEReoCAM(2MP),Jetson組込,0.5,6,カタログ,,,~0.05,IFOV(2MP/狭FOV),~100x30x35,~90,~349,メーカー参考,https://www.e-consystems.com/nvidia-cameras/jetson-agx-xavier-cameras/stereo-camera.asp
+ステレオ,Allied Vision/Nerian,Karmin3(基線25cm),産業屋外長距離型,0.5,~40,カタログ(基線25cm構成),,,0.048,IFOV(3MP),~285x60x50,~800,~3200,代理店参考(€3千級),https://nerian.com/
+ステレオ,Roboception,rc_visard 160,産業ロボット,0.5,3,カタログ,0.4,誤差~0.4%@1m級,0.048,IFOV=61°/1280px,230x75x84,850,~4300,メーカー参考(€4千級),https://roboception.com/en/rc_visard-en/
+ステレオ,Ensenso(IDS),N35(投影補助付ステレオ),産業ビンピッキング,0.5,3,カタログ動作域,0.1,近距離サブmm~mm級,,構成依存,175x50x52,~1100,~6500,代理店参考(€6千級),https://www.ids-imaging.us/ensenso-stereo-3d-camera.html
+ステレオ,Carnegie Robotics,MultiSense S7,産業/防衛,0.4,10,カタログ動作域,,,0.04,IFOV(2MP/80°),130x130x35,~500,~14000,代理店参考($1.4万級),https://carnegierobotics.com/products/multisense-s7/
+ステレオ,Carnegie Robotics,MultiSense S21B(基線21cm),屋外長距離型,0.5,~40,カタログ(長基線),,,0.04,IFOV(2MP),240x130x35,~1000,~16000,代理店参考,https://carnegierobotics.com/products/multisense-s21b/
+ステレオ,MYNT EYE,S1030,研究用VGA,0.5,18,カタログ,,,0.19,IFOV=146°D/752px,165x31x30,~184,299,メーカー参考,https://www.mynteye.com/
+ステレオ,Orbbec,Gemini 335,ロボット汎用,0.17,10,カタログ,,,0.07,IFOV=90°/1280px,~90x25x25,~76,~240,メーカー参考,https://www.orbbec.com/products/stereo-vision-camera/gemini-335/
+ステレオ,SUBARU,EyeSight ver.3(基線35cm),車載量産ADAS,1,110,先行車検知距離(技術解説),,,~0.03,画素IFOV(1280px級/推定),ルームミラー周辺一体,~500,~50000,車両OP価格(システム),https://www.subaru.co.jp/safety/
+ステレオ,Bosch,Stereo Video Camera SVC(基線12cm),車載量産ADAS,1,50,カタログ級(測距~50m),,,~0.03,画素IFOV(推定),~200x100x50,~600,~30000,OEM(システム推定),https://www.bosch-mobility.com/en/solutions/cameras/stereo-video-camera/
+ミリ波,TI,IWR1443(76-81GHz),チップ/産業,0.1,~100,アンテナ・チャープ設計依存(EVM例),3.75,4GHz帯域→c/2B=3.75cm,~15,単チップ12仮想ch級(設計依存),チップ10.4x10.4,1,~15,チップ単価(1ku),https://www.ti.com/product/IWR1443
+ミリ波,TI,AWR1642(76-81GHz),チップ/車載,0.1,~120,アンテナ・チャープ設計依存,3.75,4GHz帯域,~15,単チップ8仮想ch級,チップ10.4x10.4,1,~20,チップ単価(1ku),https://www.ti.com/product/AWR1642
+ミリ波,TI,IWR6843(60-64GHz),チップ/産業・在室検知,0.05,~50,人検知~40-50m(EVM例),3.75,4GHz帯域,~14,単チップ12仮想ch,チップ10.4x10.4,1,~25,チップ単価(1ku),https://www.ti.com/product/IWR6843
+ミリ波,TI,AWR2944(76-81GHz),チップ/車載イメージング,0.1,~200,コーナー/フロントレーダ用,3.75,4GHz超連続帯域(データシート),~9.5,4TX4RX=16仮想ch(従来比33%向上),チップ~14x14,1,~40,チップ単価(1ku),https://www.ti.com/lit/ds/symlink/awr2944.pdf
+ミリ波,TI,AWR2243カスケード4chip(TIDEP-01012),リファレンス設計/イメージング,0.5,~350,長距離デモ設計,3.75,4GHz帯域,1.4,192仮想chで方位~1.4°,基板~100x100,~100,~1000,EVM参考,https://www.ti.com/tool/TIDEP-01012
+ミリ波,Infineon,BGT60TR13C(58-63.5GHz),チップ/在室・ジェスチャ,0.05,15,プレゼンス検知カタログ,2.7,5.5GHz帯域→~2.7cm,,3RX小開口(方位粗い),チップ6.5x5.0,0.5,~10,チップ単価,https://www.infineon.com/cms/en/product/sensor/radar-sensors/radar-sensors-for-iot/60ghz-radar/bgt60tr13c/
+ミリ波,Infineon,BGT24MTR11(24GHz),チップ/産業ISM,0.5,~50,設計依存,75,ISM 200MHz帯域→75cm,,設計依存,チップ,0.5,~20,チップ単価,https://www.infineon.com/cms/en/product/sensor/radar-sensors/radar-sensors-for-iot/24ghz-radar/
+ミリ波,Acconeer,A121(60GHz PCR),チップ/超小型測距,0.03,20,カタログ(大型対象),,精度±1-2mm級(相対・パルスコヒーレント),,単ch(方位不可),チップ5.2x5.5x0.88,0.2,~8,チップ単価,https://www.acconeer.com/products/
+ミリ波,Continental,ARS408-21,車載/産業長距離型77GHz,0.2,250,遠距離モード(乗用車RCS),39,近距離モード分解能0.39m(遠距離1.79m),1.6,方位分解能(遠距離モード),138x91x31,~320,~2800,開発用単品参考,https://www.researchgate.net/figure/Basic-radar-sensor-setup-Continental-ARS-408_tbl1_359597353
+ミリ波,Continental(AUMOVIO),ARS540(4Dイメージング),車載量産L2+/L3,0.2,300,カタログ(±60°FOV),,,1,方位分解能1°(初期1.2°)・仰角2.3°,~137x90x39,~500,~350,OEM量産推定(業界記事),https://www.continental-automotive.com/en/components/radars/long-range-radars/advanced-radar-sensor-ars540.html
+ミリ波,Continental,SRR520(コーナー),車載量産,0.2,~100,カタログ級,,,,広FOVコーナー用,~90x70x30,~200,~80,OEM量産推定,https://www.continental-automotive.com/en/components/radars/
+ミリ波,Bosch,Front Radar FR5(第5世代),車載量産,0.2,210,カタログ(検知距離),,,,±60°FOV,~70x70x30,~190,~100,OEM量産推定,https://www.bosch-mobility.com/en/solutions/sensors/front-radar-sensor/
+ミリ波,Bosch,LRR4,車載量産LRR,0.25,250,カタログ,,,,±15°長距離FOV,~78x77x58,~285,~150,OEM量産推定,https://www.bosch-mobility.com/en/
+ミリ波,Aptiv,ESR 2.5,車載/研究プラットフォーム,0.5,174,長距離モード(中距離60m),,,~3.5,長距離モードビーム,~174x90x49,~575,~2500,研究用単品参考,https://autonomoustuff.com/products
+ミリ波,Aptiv,SRR2(コーナー),車載量産,0.15,80,カタログ級,,,,広FOV,~80x60x30,~150,~70,OEM量産推定,https://autonomoustuff.com/products
+ミリ波,smartmicro,UMRR-96 T-153,産業/交通監視,0.15,120,カタログ(車両),15,短距離モード~0.15m級,,マルチビーム,110x74x30,~330,~2000,開発用参考,https://www.smartmicro.com/automotive-radar
+ミリ波,ZF,FRGen21(フルレンジ),車載量産L2+,0.2,350,カタログ(発表値),,,,±60°,~140x90x40,~500,~300,OEM量産推定,https://www.zf.com/
+ミリ波,Arbe,Phoenix(4Dイメージング),車載先行開発,0.5,300,カタログ,,,1,2304仮想ch(48RX×48TX?構成公表値~1°),~120x90x40,~600,~1500,先行開発参考,https://arberobotics.com/
+ミリ波,Oculii(Ambarella),Eagle(AI仮想開口),車載先行開発,0.5,350,カタログ,,,0.5,AI仮想開口による向上値(カタログ),~120x80x30,~400,~1500,先行開発参考,https://www.oculii.com/
+ミリ波,Navtech,CTS350-X(スキャニング79GHz級),インフラ/鉱山・自動運転研究,1,250,カタログ(360°回転走査),17.5,距離ビン17.5cm,0.9,機械走査ビーム幅0.9°,φ170x150,~6000,~25000,産業用参考,https://navtechradar.com/
+ミリ波,Uhnder,S80(デジタルコード変調),車載先行開発,0.2,300,カタログ級,,,~1,192仮想ch級,~100x80x30,~300,~500,先行開発推定,https://www.uhnder.com/
+LiDAR,Benewake,TF-Luna,1D単点/ホビー,0.2,8,カタログ(90%反射),,精度±6cm(<3m)/±2%,,1D単点(走査なし・方位不可),35x21.25x13.5,~5,25,メーカー直販参考,https://en.benewake.com/TFLuna/index.html
+LiDAR,Benewake,TF03-180,1D単点/産業長距離型,0.1,180,カタログ(90%反射),,精度±10cm級,,1D単点(走査なし),44x43x32,77,~500,メーカー参考,https://en.benewake.com/TF03/index.html
+LiDAR,Garmin,LIDAR-Lite v3,1D単点/ドローン,0.05,40,カタログ,2.5,精度±2.5cm,,1D単点(走査なし),48x40x20,22,130,メーカー直販,https://buy.garmin.com/en-US/US/p/557294
+LiDAR,SLAMTEC,RPLIDAR A1M8,2D走査/ホビー,0.15,12,カタログ(白色対象),,精度~1%級,1,角度分解能≤1°,φ98x41,170,99,メーカー直販参考,https://www.slamtec.com/en/Lidar/A1
+LiDAR,SLAMTEC,RPLIDAR S2,2D走査/AMR,0.05,30,カタログ,3,精度±3cm,0.12,角度分解能0.12°,φ77x39,185,~320,メーカー参考,https://www.slamtec.com/en/Lidar/S2
+LiDAR,北陽電機,URG-04LX-UG01,2D走査/研究屋内,0.02,5.6,カタログ(白色紙),3,精度±3cm/±3%,0.36,ステップ角0.36°,50x50x70,160,~1080,代理店参考,https://www.hokuyo-aut.jp/
+LiDAR,北陽電機,UST-10LX,2D走査/AGV,0.06,10,カタログ,4,精度±4cm,0.25,ステップ角0.25°,50x50x70,130,~1670,代理店参考,https://www.hokuyo-aut.jp/
+LiDAR,北陽電機,UTM-30LX,2D走査/屋外研究,0.1,30,カタログ,3,精度±3cm(0.1-10m),0.25,ステップ角0.25°,60x60x87,370,~4700,代理店参考,https://www.hokuyo-aut.jp/
+LiDAR,SICK,TiM571,2D走査/AGV,0.05,25,カタログ(10%反射8m),6,系統誤差±6cm,0.33,角度分解能0.33°,60x60x86,250,~1800,代理店参考,https://www.sick.com/us/en/catalog/products/lidar-and-radar-sensors/lidar-sensors/tim/c/g294802
+LiDAR,SICK,LMS111,2D走査/屋外産業,0.5,20,カタログ(10%反射18m),3,系統誤差±3cm,0.25,角度分解能0.25°/0.5°,105x102x162,1100,~3800,代理店参考,https://www.sick.com/us/en/catalog/products/lidar-and-radar-sensors/lidar-sensors/lms1xx/c/g91901
+LiDAR,Velodyne(現Ouster),VLP-16 Puck,3D/研究・地図,0.5,100,カタログ,3,精度±3cm,0.2,方位0.1-0.4°(10Hz時0.2°)・仰角2°,φ103x72,830,~4000,単品参考($3千超),https://ouster.com/products/hardware/vlp-16
+LiDAR,Velodyne,HDL-32E,3D/研究(旧世代),1,100,カタログ,2,精度±2cm,0.16,方位0.16°・仰角1.33°,φ85x144,~1000,~30000,当時参考価格,https://ouster.com/
+LiDAR,Velodyne,HDL-64E,3D/研究(旧世代),1,120,カタログ,2,精度±2cm,0.09,方位~0.09°・仰角0.4°,φ203x284,~13000,~75000,当時参考価格(広く引用),https://ouster.com/
+LiDAR,Velodyne(現Ouster),VLS-128 Alpha Prime,3D車載開発長距離型,0.5,245,カタログ(最大300m),3,精度±3cm,0.11,仰角最小0.11°・方位0.2°@10Hz,φ165.5x140,~3500,~100000,報道ベース($10万級),https://ouster.com/
+LiDAR,Ouster,OS1-128(Rev7),3D/ロボット・車載開発,0.3,120,10%反射・100klx日射>90%検出(カタログ),1,精度±1-3cm(レンジ依存),0.18,方位360°/2048=0.18°・仰角45°/128=0.35°,φ87x74,447,~8000,構成依存参考,https://data.ouster.io/downloads/datasheets/datasheet-rev7-v3p1-os1.pdf
+LiDAR,Ouster,OS2-128(Rev7),3D車載開発長距離型,1,210,80%反射(10%反射・100klxでは80m@>90%検出),3,精度±3cm級,0.18,方位0.18°・仰角22.5°/128=0.18°,φ119x100,~1100,~16000,構成依存参考,https://data.ouster.io/downloads/datasheets/datasheet-rev7-v2p5-os2.pdf
+LiDAR,Hesai,AT128,車載量産ハイブリッドソリッドステート,0.5,200,10%反射@200m(カタログ・最大230m),2,精度±2cm級,0.1,方位0.1°×仰角0.2°(ROI相当),137x112x47,~1000,~1000,量産OEM推定(業界報道),https://www.hesaitech.com/product/at128/
+LiDAR,Hesai,XT32,3D/ロボット,0.05,120,カタログ(80%反射),1,精度±1cm(公称),0.18,方位0.18°・仰角1°,φ103x77,~800,~4000,参考価格,https://www.hesaitech.com/product/xt32/
+LiDAR,RoboSense,RS-LiDAR-M1,車載量産MEMS,0.5,150,10%反射(カタログ200m@高反射),5,精度±5cm,0.2,0.2°×0.2°,110x120x45,~730,1898,CES発表価格(広く報道),https://www.robosense.ai/en/rslidar/RS-LiDAR-M1
+LiDAR,RoboSense,Helios-16,3D/ロボット,0.2,150,カタログ(高反射),2,精度±2cm,0.2,方位0.2°・仰角2°,φ100x71,~950,~1500,参考価格,https://www.robosense.ai/en/
+LiDAR,Livox,Mid-360,AMR/ロボット,0.1,40,10%反射(80%反射で70m),2,精度±2cm(公称),,非反復走査(点密度で実効~0.2°級),65x65x60,265,749,メーカー定価(流通$480-550),https://www.livoxtech.com/mid-360
+LiDAR,Livox,Avia,ドローン測量/車載開発,1,190,10%反射(80%反射で450m),2,精度±2cm,,非反復走査(FOV70°),91x61x65,498,1399,メーカー定価,https://www.livoxtech.com/avia
+LiDAR,Livox,Horizon,車載開発,0.5,90,10%反射(80%反射で260m),2,精度±2cm,,非反復走査(FOV81.7°),115x65x77,950,~1000,発売時価格,https://www.livoxtech.com/horizon
+LiDAR,Luminar,Iris(1550nm),車載量産長距離型,1,250,10%反射@200m>90%検出(最大600m),1,精度cm級,0.05,最小0.05°×0.05°(ROI),~135x110x120,~1400,~1000,量産目標<$1000(ADAS版<$500報道),https://www.luminartech.com/download-iris-spec-sheet/
+LiDAR,Innoviz,InnovizOne,車載量産MEMS,0.3,250,カタログ(10%反射~140m級),,,0.1,0.1°×0.1°,~110x100x50,~800,~1000,量産目標(報道),https://innoviz.tech/innovizone
+LiDAR,Valeo,SCALA Gen2,車載量産(世界初量産車載),0.3,200,カタログ級(10%反射~80-100m級),,,0.25,方位~0.25°級・16層,~110x100x90,~900,~600,量産OEM推定(テアダウン報道),https://www.valeo.com/en/valeo-scala-lidar/
+LiDAR,Aeva,Aeries II(FMCW),車載先行開発,0.5,400,カタログ(最大500m・速度同時計測),,,~0.1,カタログ級,~110x100x60,~1200,~2000,先行開発推定,https://www.aeva.com/
