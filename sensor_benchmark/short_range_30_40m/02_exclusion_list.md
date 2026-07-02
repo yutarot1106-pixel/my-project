@@ -41,9 +41,20 @@
 | LiDAR | Valeo SCALA Gen2 | 200m | 車載長距離 (a)(b) |
 | LiDAR | Aeva Aeries II | 400m | 長距離FMCW (a) |
 
-## 補充した機種（16件・同グレード帯: 短〜中距離）
+## LiDARの方式フィルタ（3D方式のみに限定）
 
-- **LiDAR（+10）**: Benewake TFmini-S / TF02-Pro、Garmin LIDAR-Lite v4、SLAMTEC RPLIDAR A3、YDLIDAR TG30、LDROBOT LD19、北陽 UST-20LX、Livox Mid-40、Ouster OS0-128、Unitree 4D LiDAR L1
-- **ミリ波（+6）**: TI IWR6843AOP、Ainstein US-D1、Nanoradar SP25、InnoSenT iSYS-4004、RFbeam K-MD2、smartmicro DRVEGRD 152
+本比較の趣旨（30〜40m先の対象の**面的な形状・方位の取得**）に照らし、**LiDARは3D方式のみを対象**とする。以下は方式を理由に除外:
 
-補充後の母集団: **超音波24／ステレオ22／ミリ波15／LiDAR 24（計85機種）**。ミリ波のみn=20未達（→注記で申告）。
+- **1D単点型（5機除外）**: Benewake TF-Luna / TFmini-S / TF02-Pro、Garmin LIDAR-Lite v3 / v4 LED — 固定1方向の距離のみで方位・形状を持たない。40mに届く機（TF02-Pro・LIDAR-Lite v3）も本用途では役割が別（定点測距・高度計）。
+- **2D走査型（11機除外）**: SLAMTEC RPLIDAR A1/S2/A3、北陽 URG-04LX / UST-10LX / UST-20LX / UTM-30LX、SICK TiM571 / LMS111、YDLIDAR TG30、LDROBOT LD19 — 単一平面のみで高さ方向の形状を取得できない。かつ本母集団の2D機は全機カタログ最大30m以下で40m要件にも届かない。
+
+## 補充した機種
+
+**当初補充（16件・同グレード帯: 短〜中距離）**
+- LiDAR（+10）: 上記の通り3D方式フィルタで全て除外
+- ミリ波（+6）: TI IWR6843AOP、Ainstein US-D1、Nanoradar SP25、InnoSenT iSYS-4004、RFbeam K-MD2、smartmicro DRVEGRD 152
+
+**3D限定に伴う近〜中距離3D LiDARの追補（+12件・全て≤120m）**
+RoboSense Bpearl（30m近距離ドーム）／Hesai QT128（50m）・QT64（60m）・PandarXT-16（120m）／Velodyne Puck LITE・Puck Hi-Res（100m）／Ouster OS1-32・OS1-64・OS0-32・OS0-64／Livox Mid-70（90m）／Unitree 4D LiDAR L2
+
+補充後の母集団: **超音波24／ステレオ22／ミリ波15／LiDAR 20（3Dのみ・計81機種）**。ミリ波のみn=20未達（→注記で申告）。LiDARは3D限定でn=20を確保。

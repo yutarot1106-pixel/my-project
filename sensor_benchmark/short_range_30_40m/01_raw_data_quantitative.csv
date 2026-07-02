@@ -54,27 +54,11 @@ sensor,maker,model,grade_use,range_min_m,range_max_m,range_cond,res_cm,res_cond,
 ミリ波,Continental,SRR520(コーナー),車載量産,0.2,~100,カタログ級,,,,広FOVコーナー用,~90x70x30,~200,~80,OEM量産推定,https://www.continental-automotive.com/en/components/radars/
 ミリ波,Aptiv,SRR2(コーナー),車載量産,0.15,80,カタログ級,,,,広FOV,~80x60x30,~150,~70,OEM量産推定,https://autonomoustuff.com/products
 ミリ波,smartmicro,UMRR-96 T-153,産業/交通監視,0.15,120,カタログ(車両),15,短距離モード~0.15m級,,マルチビーム,110x74x30,~330,~2000,開発用参考,https://www.smartmicro.com/automotive-radar
-LiDAR,Benewake,TF-Luna,1D単点/ホビー,0.2,8,カタログ(90%反射),,精度±6cm(<3m)/±2%,,1D単点(走査なし・方位不可),35x21.25x13.5,~5,25,メーカー直販参考,https://en.benewake.com/TFLuna/index.html
-LiDAR,Garmin,LIDAR-Lite v3,1D単点/ドローン,0.05,40,カタログ,2.5,精度±2.5cm,,1D単点(走査なし),48x40x20,22,130,メーカー直販,https://buy.garmin.com/en-US/US/p/557294
-LiDAR,SLAMTEC,RPLIDAR A1M8,2D走査/ホビー,0.15,12,カタログ(白色対象),,精度~1%級,1,角度分解能≤1°,φ98x41,170,99,メーカー直販参考,https://www.slamtec.com/en/Lidar/A1
-LiDAR,SLAMTEC,RPLIDAR S2,2D走査/AMR,0.05,30,カタログ,3,精度±3cm,0.12,角度分解能0.12°,φ77x39,185,~320,メーカー参考,https://www.slamtec.com/en/Lidar/S2
-LiDAR,北陽電機,URG-04LX-UG01,2D走査/研究屋内,0.02,5.6,カタログ(白色紙),3,精度±3cm/±3%,0.36,ステップ角0.36°,50x50x70,160,~1080,代理店参考,https://www.hokuyo-aut.jp/
-LiDAR,北陽電機,UST-10LX,2D走査/AGV,0.06,10,カタログ,4,精度±4cm,0.25,ステップ角0.25°,50x50x70,130,~1670,代理店参考,https://www.hokuyo-aut.jp/
-LiDAR,北陽電機,UTM-30LX,2D走査/屋外研究,0.1,30,カタログ,3,精度±3cm(0.1-10m),0.25,ステップ角0.25°,60x60x87,370,~4700,代理店参考,https://www.hokuyo-aut.jp/
-LiDAR,SICK,TiM571,2D走査/AGV,0.05,25,カタログ(10%反射8m),6,系統誤差±6cm,0.33,角度分解能0.33°,60x60x86,250,~1800,代理店参考,https://www.sick.com/us/en/catalog/products/lidar-and-radar-sensors/lidar-sensors/tim/c/g294802
-LiDAR,SICK,LMS111,2D走査/屋外産業,0.5,20,カタログ(10%反射18m),3,系統誤差±3cm,0.25,角度分解能0.25°/0.5°,105x102x162,1100,~3800,代理店参考,https://www.sick.com/us/en/catalog/products/lidar-and-radar-sensors/lidar-sensors/lms1xx/c/g91901
 LiDAR,Velodyne(現Ouster),VLP-16 Puck,3D/研究・地図,0.5,100,カタログ,3,精度±3cm,0.2,方位0.1-0.4°(10Hz時0.2°)・仰角2°,φ103x72,830,~4000,単品参考($3千超),https://ouster.com/products/hardware/vlp-16
 LiDAR,Ouster,OS1-128(Rev7),3D/ロボット・車載開発,0.3,120,10%反射・100klx日射>90%検出(カタログ),1,精度±1-3cm(レンジ依存),0.18,方位360°/2048=0.18°・仰角45°/128=0.35°,φ87x74,447,~8000,構成依存参考,https://data.ouster.io/downloads/datasheets/datasheet-rev7-v3p1-os1.pdf
 LiDAR,Hesai,XT32,3D/ロボット,0.05,120,カタログ(80%反射),1,精度±1cm(公称),0.18,方位0.18°・仰角1°,φ103x77,~800,~4000,参考価格,https://www.hesaitech.com/product/xt32/
 LiDAR,Livox,Mid-360,AMR/ロボット,0.1,40,10%反射(80%反射で70m),2,精度±2cm(公称),,非反復走査(点密度で実効~0.2°級),65x65x60,265,749,メーカー定価(流通$480-550),https://www.livoxtech.com/mid-360
 LiDAR,Livox,Horizon,車載開発,0.5,90,10%反射(80%反射で260m),2,精度±2cm,,非反復走査(FOV81.7°),115x65x77,950,~1000,発売時価格,https://www.livoxtech.com/horizon
-LiDAR,Benewake,TFmini-S,1D単点/ホビー,0.1,12,カタログ(90%反射),,精度±6cm(<6m)/±1%,,1D単点(走査なし・方位不可),42x15x16,~5,43,メーカー直販参考,https://en.benewake.com/TFminiS/index.html
-LiDAR,Benewake,TF02-Pro,1D単点/産業,0.1,40,カタログ(90%反射・10%反射では13.5m),,精度±5cm級,,1D単点(走査なし),~43x32x48,~50,~89,メーカー参考,https://en.benewake.com/TF02Pro/index.html
-LiDAR,Garmin,LIDAR-Lite v4 LED,1D単点/ドローン,0.05,10,カタログ,5,精度±5cm級,,1D単点(LED方式),~38x33x21,~24,~65,メーカー直販参考,https://buy.garmin.com/en-US/US/p/610275
-LiDAR,SLAMTEC,RPLIDAR A3,2D走査/AMR,0.2,25,カタログ(白色対象・暗色10m),,,0.225,角度分解能0.225°,φ76x41,190,~600,メーカー参考,https://www.slamtec.com/en/Lidar/A3
-LiDAR,YDLIDAR,TG30,2D走査/屋外AMR,0.05,30,カタログ,,,~0.2,角度分解能~0.2°級,φ72x51,~200,~400,メーカー参考,https://www.ydlidar.com/products
-LiDAR,LDROBOT,LD19(STL-19P),2D走査/ホビー,0.02,12,カタログ,,,~0.8,角度分解能~0.8°,38x38x34,47,~99,メーカー参考,https://www.ldrobot.com/
-LiDAR,北陽電機,UST-20LX,2D走査/AGV,0.06,20,カタログ,4,精度±4cm級,0.25,ステップ角0.25°,50x50x70,130,~2600,代理店参考,https://www.hokuyo-aut.jp/
 LiDAR,Livox,Mid-40,3D非反復/ロボット,1,90,10%反射(20%反射で130m),2,精度±2cm,,非反復走査(FOV38.4°円形),88x69x76,710,599,発売時定価,https://www.livoxtech.com/mid-40
 LiDAR,Ouster,OS0-128(Rev7),3D超広角短距離/ロボット,0.3,~50,10%反射・100klx日射(超広角90°縦FOV),~3,精度±cm級,0.18,方位0.18°・仰角90°/128=0.7°,φ87x74,~445,~8000,構成依存参考,https://data.ouster.io/downloads/datasheets/datasheet-rev7-v3p0-os0.pdf
 LiDAR,Unitree,4D LiDAR L1,3D/ロボット廉価,0.05,~30,カタログ級,~2,精度±2cm級,,非重複走査(半球FOV),~φ58x45,~230,~349,メーカー参考,https://www.unitree.com/LiDAR
@@ -84,3 +68,15 @@ LiDAR,Unitree,4D LiDAR L1,3D/ロボット廉価,0.05,~30,カタログ級,~2,精�
 ミリ波,InnoSenT,iSYS-4004(24GHz),産業検知モジュール,0.5,~25,カタログ級,,,,狭ビームモジュール,~65x50x25,~80,~300,メーカー参考,https://www.innosent.de/
 ミリ波,RFbeam,K-MD2(24GHz),産業測距モジュール,0.3,~40,カタログ級(対象RCS依存),,,,3chモノパルス級(方位粗),25x25x6,~10,~150,メーカー参考,https://rfbeam.ch/
 ミリ波,smartmicro,DRVEGRD 152(コーナー),車載開発コーナー/ミッド,0.15,~64,カタログ(ミッドレンジ),,,,広FOVコーナー,~90x65x25,~150,~1500,開発用参考,https://www.smartmicro.com/automotive-radar
+LiDAR,RoboSense,Bpearl(近距離ドーム),3D近距離ブラインドスポット/AMR,0.05,30,10%反射@30m(カタログ),3,精度±3cm,0.2,方位0.2°・仰角90°/32=2.81°(360°×90°半球),φ100x111,~920,~1800,代理店参考(€1800級),https://www.robosense.ai/en/rslidar/Bpearl
+LiDAR,Hesai,QT128,3D近距離360°/ロボタクシー近傍,0.05,50,10%反射@50m(カタログ・超広角105°縦),2,精度±2cm級,0.2,方位0.2°・仰角105.2°/128=0.82°,φ104x76,~1050,~2000,量産OEM推定,https://www.hesaitech.com/product/qt128/
+LiDAR,Hesai,QT64,3D近距離360°/AMR,0.05,60,10%反射20m(80%反射で60m),2,精度±2cm級,0.4,方位0.4°・仰角104.2°/64=1.63°,φ104x76,~1100,~1500,量産OEM推定,https://manualzz.com/doc/80087804/hesai-qt64-user-manual
+LiDAR,Hesai,PandarXT-16,3D/ロボット中距離,0.05,120,10%反射(カタログ),1,精度±1cm(公称),0.18,方位0.18°・仰角2°(31°/16),φ103x77,~800,~3000,参考価格,https://www.hesaitech.com/product/pandarxt/
+LiDAR,Velodyne(現Ouster),Puck LITE(VLP-16 LITE),3D/軽量モバイル,0.5,100,カタログ,3,精度±3cm,0.2,方位0.2°@10Hz・仰角2°,φ103x72,590,~4000,単品参考,https://ouster.com/products/hardware/vlp-16
+LiDAR,Velodyne(現Ouster),Puck Hi-Res,3D/高密度中距離,0.5,100,カタログ,3,精度±3cm,0.2,方位0.2°・仰角1.33°(高密度版),φ103x72,830,~8000,単品参考,https://ouster.com/
+LiDAR,Ouster,OS1-32(Rev7),3D低コスト中距離/AMR,0.3,120,10%反射・100klx日射>90%検出,3,精度±1-3cm,0.18,方位0.18°・仰角45°/32=1.4°,φ87x74,~445,~4000,構成依存参考,https://ouster.com/insights/blog/os1-32-high-resolution-low-cost-lidar-sensor
+LiDAR,Ouster,OS1-64(Rev7),3D中距離/ロボット・車載開発,0.3,120,10%反射・100klx日射>90%検出,3,精度±1-3cm,0.18,方位0.18°・仰角45°/64=0.7°,φ87x74,482,~6000,構成依存参考,https://levelfivesupplies.com/product/ouster-os1-64-lidar-sensor/
+LiDAR,Ouster,OS0-64(Rev7),3D超広角短距離/AMR,0.3,~50,10%反射・100klx日射(超広角90°縦),3,精度±cm級,0.18,方位0.18°・仰角90°/64=1.4°,φ87x74,~445,~6000,構成依存参考,https://data.ouster.io/downloads/datasheets/datasheet-rev7-v3p0-os0.pdf
+LiDAR,Ouster,OS0-32(Rev7),3D超広角短距離低コスト,0.3,~50,10%反射・100klx日射(超広角90°縦),3,精度±cm級,0.18,方位0.18°・仰角90°/32=2.8°,φ87x74,~445,~4000,構成依存参考,https://data.ouster.io/downloads/datasheets/datasheet-rev7-v3p0-os0.pdf
+LiDAR,Livox,Mid-70,3D非反復円形FOV/ロボット,0.05,90,10%反射(20%反射で130m),2,精度±2cm,,非反復走査(円形FOV70.4°),88x69x76,~760,~799,メーカー参考,https://www.livoxtech.com/mid-70
+LiDAR,Unitree,4D LiDAR L2,3D/ロボット廉価(L1後継),0.05,~30,カタログ級,~2,精度±2cm級,,非重複走査(半球FOV),~76x62x63,~210,~399,メーカー参考,https://www.unitree.com/LiDAR
